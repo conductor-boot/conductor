@@ -77,7 +77,7 @@ public class OracleQueueDAOTest {
 
     @Before
     public void setup() {
-        oracleContainer = new OracleContainer(DockerImageName.parse("conductorboot/oracle:19.3.0-ee-slim")).withDatabaseName(name.getMethodName());
+        oracleContainer = new OracleContainer(DockerImageName.parse("oracleinanutshell/oracle-xe-11g:1.0.0")).withDatabaseName(name.getMethodName());
     	//oracleContainer.withDatabaseName(name.getMethodName()).start();
         testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
         queueDAO = new OracleQueueDAO(testUtil.getObjectMapper(), testUtil.getDataSource());
