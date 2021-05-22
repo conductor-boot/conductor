@@ -79,8 +79,8 @@ public class OracleQueueDAOTest {
    			 .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
    			 .withConnectTimeoutSeconds(900)
    			 .withPassword("conductor")
-   			 .withUsername("conductor")
-   			 .withDatabaseName("XEPDB1");
+   			 .withUsername("conductor");
+   			 //.withDatabaseName("XEPDB1");
     	
     	oracleContainer.start();
     	
