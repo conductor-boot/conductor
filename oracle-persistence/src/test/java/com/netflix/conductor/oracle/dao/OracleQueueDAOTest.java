@@ -82,15 +82,15 @@ public class OracleQueueDAOTest {
     	
     	try {
     		oracleContainer = new OracleContainer(DockerImageName.parse("conductorboot/oracle:18.4.0-xe-test")).withDatabaseName("XEPDB1").withUsername("conductor").withPassword("conductor");
-    		LOGGER.info("Started Oracle Container with XEPDB1 Database");
+    		
     	}
     	catch(Exception outerE) {
     		try {
     			oracleContainer = new OracleContainer(DockerImageName.parse("conductorboot/oracle:18.4.0-xe-test")).withDatabaseName(name.getMethodName());
-    			LOGGER.info("Started Oracle Container with "+name.getMethodName()+" Database");
+    		
     		}
     		catch(Exception innerE) {
-    			LOGGER.info("Started Oracle Container with No Pre Configured Database");
+    		
     			oracleContainer = new OracleContainer(DockerImageName.parse("conductorboot/oracle:18.4.0-xe-test"));
     		}
     	}
