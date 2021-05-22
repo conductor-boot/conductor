@@ -79,9 +79,9 @@ public class OracleMetadataDAOTest {
     	oracleContainer = new OracleContainer(DockerImageName.parse(
     			 "conductorboot/oracle:18.4.0-xe-slim-test"))
     			 .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
-    			 .withConnectTimeoutSeconds(900)
-    			 .withPassword("conductor")
-    			 .withUsername("conductor");
+    			 .withConnectTimeoutSeconds(900);
+    			 //.withPassword("conductor")
+    			 //.withUsername("conductor")
     			 //.withDatabaseName("XEPDB1");
     	
     	oracleContainer.start();
