@@ -11,7 +11,7 @@ public class OracleContainerTestConfiguration {
 	@Bean
 	public static OracleContainer oracleContainer() {
 		OracleContainer oracleContainer = new OracleContainer(DockerImageName.parse(
-	   			 "conductorboot/oracle:18.4.0-xe-slim-test"));
+	   			 "conductorboot/oracle:18.4.0-xe-slim"));
 		oracleContainer
 		.withInitScript("init_test_db.sql")
 		.withStartupTimeoutSeconds(900)
