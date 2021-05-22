@@ -62,8 +62,8 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
 
     @Before
     public void setup() {
-        oracleContainer = new OracleContainer(DockerImageName.parse("oracleinanutshell/oracle-xe-11g:1.0.0")).withDatabaseName(name.getMethodName());
-    	//oracleContainer.withDatabaseName(name.getMethodName()).start();
+    	oracleContainer = new OracleContainer(DockerImageName.parse("oracleinanutshell/oracle-xe-11g:1.0.0"));
+        oracleContainer.start();
         testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
         executionDAO = new OracleExecutionDAO(testUtil.getObjectMapper(), testUtil.getDataSource());
     }
