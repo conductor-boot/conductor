@@ -43,8 +43,10 @@ public class OracleDAOTestUtil {
         this.dataSource = new HikariDataSource();
 
     	dataSource.setJdbcUrl(oracleContainer.getJdbcUrl());
-        dataSource.setUsername(oracleContainer.getUsername());
-        dataSource.setPassword(oracleContainer.getPassword());
+       // dataSource.setUsername(oracleContainer.getUsername());
+       // dataSource.setPassword(oracleContainer.getPassword());
+        dataSource.setUsername("conductor");
+        dataSource.setPassword("conductor");
         dataSource.setAutoCommit(false);
 
         when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.ofSeconds(60));

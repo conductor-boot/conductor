@@ -75,9 +75,9 @@ public class OracleQueueDAOTest {
     	System.setProperty("oracle.jdbc.fanEnabled", "false");
     	
     	oracleContainer = new OracleContainer(DockerImageName.parse(
-   			 "conductorboot/oracle:18.4.0-xe-slim-test"))
+   			 "conductorboot/oracle:18.4.0-xe-slim"))
    			 .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
-   			 .withConnectTimeoutSeconds(900);
+   			 .withConnectTimeoutSeconds(900).withInitScript("init_test_db.sql");
 			 //.withPassword("conductor")
 			 //.withUsername("conductor")
 			 //.withDatabaseName("XEPDB1");
