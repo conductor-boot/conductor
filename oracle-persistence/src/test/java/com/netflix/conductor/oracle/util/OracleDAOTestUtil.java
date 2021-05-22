@@ -37,13 +37,12 @@ public class OracleDAOTestUtil {
     public OracleDAOTestUtil(OracleContainer oracleContainer, ObjectMapper objectMapper) {
 
     	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
-    	System.setProperty("oracle.jdbc.fanEnabled", "false");
     	
         this.objectMapper = objectMapper;
 
         this.dataSource = new HikariDataSource();
-        
-        dataSource.setJdbcUrl(oracleContainer.getJdbcUrl());
+
+    	dataSource.setJdbcUrl(oracleContainer.getJdbcUrl());
         dataSource.setUsername(oracleContainer.getUsername());
         dataSource.setPassword(oracleContainer.getPassword());
         dataSource.setAutoCommit(false);
@@ -54,34 +53,7 @@ public class OracleDAOTestUtil {
         dataSource.setMaximumPoolSize(8);
 
         flywayMigrate(dataSource);
-        
-		/*
-		 * try { dataSource.setJdbcUrl(oracleContainer.getJdbcUrl());
-		 * dataSource.setUsername(oracleContainer.getUsername());
-		 * dataSource.setPassword(oracleContainer.getPassword());
-		 * dataSource.setAutoCommit(false);
-		 * 
-		 * when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.
-		 * ofSeconds(60));
-		 * 
-		 * // Prevent DB from getting exhausted during rapid testing
-		 * dataSource.setMaximumPoolSize(8);
-		 * 
-		 * flywayMigrate(dataSource); } catch(Exception e) {
-		 * 
-		 * dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+oracleContainer.getHost()+":"+
-		 * oracleContainer.getFirstMappedPort()+"/CONDUCTOR");
-		 * dataSource.setUsername("conductor"); dataSource.setPassword("conductor");
-		 * dataSource.setAutoCommit(false);
-		 * 
-		 * when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.
-		 * ofSeconds(60));
-		 * 
-		 * // Prevent DB from getting exhausted during rapid testing
-		 * dataSource.setMaximumPoolSize(8);
-		 * 
-		 * flywayMigrate(dataSource); }
-		 */
+    
     }
 
     private void flywayMigrate(DataSource dataSource) {

@@ -12,43 +12,6 @@
  */
 package com.netflix.conductor.oracle.dao;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.conductor.common.config.TestObjectMapperConfiguration;
-import com.netflix.conductor.common.metadata.events.EventHandler;
-import com.netflix.conductor.common.metadata.tasks.TaskDef;
-import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
-import com.netflix.conductor.core.exception.ApplicationException;
-import com.netflix.conductor.oracle.util.OracleDAOTestUtil;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.rules.ExpectedException;
-import org.junit.rules.TestName;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.containers.OracleContainer;
-import org.testcontainers.utility.DockerImageName;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
-import javax.sql.DataSource;
-
 import static com.netflix.conductor.core.exception.ApplicationException.Code.CONFLICT;
 import static com.netflix.conductor.core.exception.ApplicationException.Code.NOT_FOUND;
 import static org.hamcrest.Matchers.hasProperty;
@@ -57,6 +20,35 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.rules.TestName;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.testcontainers.containers.OracleContainer;
+import org.testcontainers.utility.DockerImageName;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.conductor.common.config.TestObjectMapperConfiguration;
+import com.netflix.conductor.common.metadata.events.EventHandler;
+import com.netflix.conductor.common.metadata.tasks.TaskDef;
+import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
+import com.netflix.conductor.core.exception.ApplicationException;
+import com.netflix.conductor.oracle.util.OracleDAOTestUtil;
 
 @ContextConfiguration(classes = {TestObjectMapperConfiguration.class})
 @RunWith(SpringRunner.class)
@@ -74,39 +66,20 @@ public class OracleMetadataDAOTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    @Autowired
     public static OracleContainer oracleContainer;
+    
 
     @SuppressWarnings("resource")
 	@Before
     public void setup() {
-    	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
-        System.setProperty("oracle.jdbc.fanEnabled", "false");
-
-        /*
-		 * try { oracleContainer = new
-		 * OracleContainer(DockerImageName.parse("conductorboot/oracle:18.4.0-xe-test"))
-		 * .withDatabaseName("XEPDB1").withUsername("conductor").withPassword(
-		 * "conductor");
-		 * 
-		 * } catch(Exception outerE) { try { oracleContainer = new
-		 * OracleContainer(DockerImageName.parse("conductorboot/oracle:18.4.0-xe-test"))
-		 * .withDatabaseName(name.getMethodName());
-		 * 
-		 * } catch(Exception innerE) {
-		 * 
-		 * oracleContainer = new OracleContainer(DockerImageName.parse(
-		 * "phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
-		 * .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
-		 * .withConnectTimeoutSeconds(900) .withPassword("Str0ngPassw0rd"); } }
-		 */
     	
-		/*
-		 * oracleContainer = new OracleContainer(DockerImageName.parse(
-		 * "phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
-		 * .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
-		 * .withConnectTimeoutSeconds(900) .withPassword("Str0ngPassw0rd");
-		 */
+    	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
+    	System.setProperty("oracle.jdbc.fanEnabled", "false");
+    	
+    	oracleContainer = new OracleContainer(DockerImageName.parse(
+    			 "phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
+    			 .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
+    			 .withConnectTimeoutSeconds(900) .withPassword("Str0ngPassw0rd");
     	
     	oracleContainer.start();
     	

@@ -65,39 +65,19 @@ public class OracleQueueDAOTest {
     @Rule
     public ExpectedException expected = ExpectedException.none();
 
-    @Autowired
     public static OracleContainer oracleContainer;
-
+   
     @SuppressWarnings("resource")
 	@Before
     public void setup() {
+    	
     	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
     	System.setProperty("oracle.jdbc.fanEnabled", "false");
     	
-		/*
-		 * try { oracleContainer = new
-		 * OracleContainer(DockerImageName.parse("conductorboot/oracle:18.4.0-xe-test"))
-		 * .withDatabaseName("XEPDB1").withUsername("conductor").withPassword(
-		 * "conductor");
-		 * 
-		 * } catch(Exception outerE) { try { oracleContainer = new
-		 * OracleContainer(DockerImageName.parse("conductorboot/oracle:18.4.0-xe-test"))
-		 * .withDatabaseName(name.getMethodName());
-		 * 
-		 * } catch(Exception innerE) {
-		 * 
-		 * oracleContainer = new OracleContainer(DockerImageName.parse(
-		 * "phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
-		 * .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
-		 * .withConnectTimeoutSeconds(900) .withPassword("Str0ngPassw0rd"); } }
-		 */
-    	
-		/*
-		 * oracleContainer = new OracleContainer(DockerImageName.parse(
-		 * "phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
-		 * .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
-		 * .withConnectTimeoutSeconds(900) .withPassword("Str0ngPassw0rd");
-		 */
+		oracleContainer = new OracleContainer(DockerImageName.parse(
+		 "phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
+		 .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
+		 .withConnectTimeoutSeconds(900) .withPassword("Str0ngPassw0rd");
     	
     	oracleContainer.start();
     	

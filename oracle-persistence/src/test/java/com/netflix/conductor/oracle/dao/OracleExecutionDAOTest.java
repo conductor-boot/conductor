@@ -17,19 +17,13 @@ import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
-import javax.sql.DataSource;
-
 import org.junit.After;
 import org.junit.Before;
-import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.OracleContainer;
@@ -42,8 +36,6 @@ import com.netflix.conductor.common.run.Workflow;
 import com.netflix.conductor.dao.ExecutionDAO;
 import com.netflix.conductor.dao.ExecutionDAOTest;
 import com.netflix.conductor.oracle.util.OracleDAOTestUtil;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 
 @ContextConfiguration(classes = {TestObjectMapperConfiguration.class})
 @RunWith(SpringRunner.class)
@@ -58,39 +50,19 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
     @Rule
     public TestName name = new TestName();
 
-    @Autowired
     public static OracleContainer oracleContainer;
 
     @SuppressWarnings("resource")
 	@Before
     public void setup() {
+    	
     	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
     	System.setProperty("oracle.jdbc.fanEnabled", "false");
     	
-    	/*
-		 * try { oracleContainer = new
-		 * OracleContainer(DockerImageName.parse("conductorboot/oracle:18.4.0-xe-test"))
-		 * .withDatabaseName("XEPDB1").withUsername("conductor").withPassword(
-		 * "conductor");
-		 * 
-		 * } catch(Exception outerE) { try { oracleContainer = new
-		 * OracleContainer(DockerImageName.parse("conductorboot/oracle:18.4.0-xe-test"))
-		 * .withDatabaseName(name.getMethodName());
-		 * 
-		 * } catch(Exception innerE) {
-		 * 
-		 * oracleContainer = new OracleContainer(DockerImageName.parse(
-		 * "phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
-		 * .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
-		 * .withConnectTimeoutSeconds(900) .withPassword("Str0ngPassw0rd"); } }
-		 */
-    	
-		/*
-		 * oracleContainer = new OracleContainer(DockerImageName.parse(
-		 * "phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
-		 * .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
-		 * .withConnectTimeoutSeconds(900) .withPassword("Str0ngPassw0rd");
-		 */
+    	oracleContainer = new OracleContainer(DockerImageName.parse(
+    			 "phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
+    			 .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
+    			 .withConnectTimeoutSeconds(900) .withPassword("Str0ngPassw0rd");
     	
     	oracleContainer.start();
     	
