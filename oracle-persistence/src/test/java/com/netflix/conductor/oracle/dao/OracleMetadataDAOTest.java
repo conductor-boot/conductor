@@ -81,7 +81,7 @@ public class OracleMetadataDAOTest {
     public void setup() {
     	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
     	try {
-    		oracleContainer = new OracleContainer(DockerImageName.parse("conductorboot/oracle:18.4.0-xe-test")).withDatabaseName("CONDUCTOR").withUsername("conductor").withPassword("conductor");
+    		oracleContainer = new OracleContainer(DockerImageName.parse("conductorboot/oracle:18.4.0-xe-test")).withDatabaseName("XEPDB1").withUsername("conductor").withPassword("conductor");
     	}
     	catch(Exception outerE) {
     		try {
