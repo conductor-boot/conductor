@@ -82,7 +82,7 @@ public class OracleMetadataDAOTest {
 		//.withInitScript("init_test_db.sql")
 		.withStartupTimeoutSeconds(900)
 		.withConnectTimeoutSeconds(900)
-		.withUsername("sys as sysdba")
+		//.withUsername("sys as sysdba")
 		.withPassword("Str0ngPassw0rd");
 		
     	oracleContainer.start();
