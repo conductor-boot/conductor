@@ -42,6 +42,14 @@ public class OracleDAOTestUtil {
 
         this.dataSource = new HikariDataSource();
         
+        System.out.println("ORACLE JDBC URL --> "+oracleContainer.getJdbcUrl());
+        System.out.println("ORACLE USERNAME --> "+oracleContainer.getUsername());
+        System.out.println("ORACLE PASSWORDL --> "+oracleContainer.getPassword());
+        
+        System.out.println("FORMED JDBC URL --> jdbc:oracle:thin:@//"+oracleContainer.getHost()+":"+oracleContainer.getOraclePort()+"/CONDUCTOR");
+        System.out.println("FORMED USERNAMEL --> conductor");
+        System.out.println("FORMED PASSWORD --> conductor");
+        
         dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+oracleContainer.getHost()+":"+oracleContainer.getOraclePort()+"/CONDUCTOR");
         dataSource.setUsername("conductor");
         dataSource.setPassword("conductor");
