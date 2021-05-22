@@ -58,14 +58,12 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
     @Rule
     public TestName name = new TestName();
 
-    @SuppressWarnings("deprecation")
-	@ClassRule
-    public static OracleContainer oracleContainer = new OracleContainer();
+    public static OracleContainer oracleContainer;
 
     @Before
     public void setup() {
-       // oracleContainer = new OracleContainer(DockerImageName.parse("oracle")).withDatabaseName(name.getMethodName());
-    	oracleContainer.withDatabaseName(name.getMethodName()).start();
+        oracleContainer = new OracleContainer(DockerImageName.parse("conductorboot/oracle:19.3.0-ee-slim")).withDatabaseName(name.getMethodName());
+    	//oracleContainer.withDatabaseName(name.getMethodName()).start();
         testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
         executionDAO = new OracleExecutionDAO(testUtil.getObjectMapper(), testUtil.getDataSource());
     }
