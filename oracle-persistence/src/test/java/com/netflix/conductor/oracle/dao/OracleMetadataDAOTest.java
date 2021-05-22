@@ -40,7 +40,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.OracleContainer;
-import org.testcontainers.utility.DockerImageName;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.conductor.common.config.TestObjectMapperConfiguration;
@@ -48,9 +47,10 @@ import com.netflix.conductor.common.metadata.events.EventHandler;
 import com.netflix.conductor.common.metadata.tasks.TaskDef;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
 import com.netflix.conductor.core.exception.ApplicationException;
+import com.netflix.conductor.oracle.config.OracleContainerTestConfiguration;
 import com.netflix.conductor.oracle.util.OracleDAOTestUtil;
 
-@ContextConfiguration(classes = {TestObjectMapperConfiguration.class})
+@ContextConfiguration(classes = {TestObjectMapperConfiguration.class, OracleContainerTestConfiguration.class})
 @RunWith(SpringRunner.class)
 public class OracleMetadataDAOTest {
 
@@ -66,6 +66,7 @@ public class OracleMetadataDAOTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    @Autowired
     public static OracleContainer oracleContainer;
     
 
@@ -75,14 +76,6 @@ public class OracleMetadataDAOTest {
     	
     	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
     	System.setProperty("oracle.jdbc.fanEnabled", "false");
-    	
-    	oracleContainer = new OracleContainer(DockerImageName.parse(
-      			 "conductorboot/oracle:18.4.0-xe-slim"))
-      			 .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
-      			 .withConnectTimeoutSeconds(900).withInitScript("init_test_db.sql");
-    			 //.withPassword("conductor")
-    			 //.withUsername("conductor")
-    			 //.withDatabaseName("XEPDB1");
     	
     	oracleContainer.start();
     	
