@@ -60,12 +60,12 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
     	System.setProperty("oracle.jdbc.fanEnabled", "false");
     	
     	oracleContainer = new OracleContainer(DockerImageName.parse(
-    			 "phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
-    			 .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
-    			 .withConnectTimeoutSeconds(900)
-    			 .withPassword("Str0ngPassw0rd")
-    			 .withUsername("conductor")
-    			 .withDatabaseName("XEPDB1");
+   			 "conductorboot/oracle:18.4.0-xe-slim-test"))
+   			 .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
+   			 .withConnectTimeoutSeconds(900)
+   			 .withPassword("conductor")
+   			 .withUsername("conductor")
+   			 .withDatabaseName("XEPDB1");
     	
     	oracleContainer.start();
     	
