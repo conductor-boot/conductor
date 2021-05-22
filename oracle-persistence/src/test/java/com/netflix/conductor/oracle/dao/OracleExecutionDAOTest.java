@@ -62,7 +62,10 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
     	oracleContainer = new OracleContainer(DockerImageName.parse(
     			 "phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
     			 .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
-    			 .withConnectTimeoutSeconds(900) .withPassword("Str0ngPassw0rd");
+    			 .withConnectTimeoutSeconds(900)
+    			 .withPassword("Str0ngPassw0rd")
+    			 .withUsername("conductor")
+    			 .withDatabaseName("XEPDB1");
     	
     	oracleContainer.start();
     	
