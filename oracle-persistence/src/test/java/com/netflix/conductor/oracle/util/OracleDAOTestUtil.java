@@ -37,6 +37,7 @@ public class OracleDAOTestUtil {
     public OracleDAOTestUtil(OracleContainer oracleContainer, ObjectMapper objectMapper) {
 
     	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
+    	System.setProperty("oracle.jdbc.fanEnabled", "false");
     	
         this.objectMapper = objectMapper;
 

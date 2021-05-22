@@ -12,33 +12,11 @@
  */
 package com.netflix.conductor.oracle.dao;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
-import com.netflix.conductor.common.config.TestObjectMapperConfiguration;
-import com.netflix.conductor.core.events.queue.Message;
-import com.netflix.conductor.oracle.util.OracleDAOTestUtil;
-import com.netflix.conductor.oracle.util.Query;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.rules.ExpectedException;
-import org.junit.rules.TestName;
-import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.containers.OracleContainer;
-import org.testcontainers.utility.DockerImageName;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -47,13 +25,27 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.sql.DataSource;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.rules.TestName;
+import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.testcontainers.containers.OracleContainer;
+import org.testcontainers.utility.DockerImageName;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
+import com.netflix.conductor.common.config.TestObjectMapperConfiguration;
+import com.netflix.conductor.core.events.queue.Message;
+import com.netflix.conductor.oracle.util.OracleDAOTestUtil;
+import com.netflix.conductor.oracle.util.Query;
 
 @ContextConfiguration(classes = {TestObjectMapperConfiguration.class})
 @RunWith(SpringRunner.class)
@@ -73,6 +65,7 @@ public class OracleQueueDAOTest {
     @Rule
     public ExpectedException expected = ExpectedException.none();
 
+    @Autowired
     public static OracleContainer oracleContainer;
 
     @SuppressWarnings("resource")
@@ -99,11 +92,12 @@ public class OracleQueueDAOTest {
 		 * .withConnectTimeoutSeconds(900) .withPassword("Str0ngPassw0rd"); } }
 		 */
     	
-    	oracleContainer = new OracleContainer(DockerImageName.parse("phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
-				.withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd")
-				.withStartupTimeoutSeconds(900)
-                .withConnectTimeoutSeconds(900)
-                .withPassword("Str0ngPassw0rd");
+		/*
+		 * oracleContainer = new OracleContainer(DockerImageName.parse(
+		 * "phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
+		 * .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
+		 * .withConnectTimeoutSeconds(900) .withPassword("Str0ngPassw0rd");
+		 */
     	
     	oracleContainer.start();
     	

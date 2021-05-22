@@ -74,6 +74,7 @@ public class OracleMetadataDAOTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    @Autowired
     public static OracleContainer oracleContainer;
 
     @SuppressWarnings("resource")
@@ -100,11 +101,12 @@ public class OracleMetadataDAOTest {
 		 * .withConnectTimeoutSeconds(900) .withPassword("Str0ngPassw0rd"); } }
 		 */
     	
-    	oracleContainer = new OracleContainer(DockerImageName.parse("phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
-				.withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd")
-				.withStartupTimeoutSeconds(900)
-                .withConnectTimeoutSeconds(900)
-                .withPassword("Str0ngPassw0rd");
+		/*
+		 * oracleContainer = new OracleContainer(DockerImageName.parse(
+		 * "phx.ocir.io/toddrsharp/oracle-db/oracle/database:18.4.0-xe"))
+		 * .withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd") .withStartupTimeoutSeconds(900)
+		 * .withConnectTimeoutSeconds(900) .withPassword("Str0ngPassw0rd");
+		 */
     	
     	oracleContainer.start();
     	
