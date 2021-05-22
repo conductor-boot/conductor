@@ -42,33 +42,45 @@ public class OracleDAOTestUtil {
 
         this.dataSource = new HikariDataSource();
         
-        try {
-        	dataSource.setJdbcUrl(oracleContainer.getJdbcUrl());
-            dataSource.setUsername(oracleContainer.getUsername());
-            dataSource.setPassword(oracleContainer.getPassword());
-            dataSource.setAutoCommit(false);
+        dataSource.setJdbcUrl(oracleContainer.getJdbcUrl());
+        dataSource.setUsername(oracleContainer.getUsername());
+        dataSource.setPassword(oracleContainer.getPassword());
+        dataSource.setAutoCommit(false);
 
-            when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.ofSeconds(60));
+        when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.ofSeconds(60));
 
-            // Prevent DB from getting exhausted during rapid testing
-            dataSource.setMaximumPoolSize(8);
+        // Prevent DB from getting exhausted during rapid testing
+        dataSource.setMaximumPoolSize(8);
 
-            flywayMigrate(dataSource);
-        }
-        catch(Exception e) {
-        	
-        	dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+oracleContainer.getHost()+":"+oracleContainer.getFirstMappedPort()+"/CONDUCTOR");
-            dataSource.setUsername("conductor");
-            dataSource.setPassword("conductor");
-            dataSource.setAutoCommit(false);
-
-            when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.ofSeconds(60));
-
-            // Prevent DB from getting exhausted during rapid testing
-            dataSource.setMaximumPoolSize(8);
-
-            flywayMigrate(dataSource);
-        }
+        flywayMigrate(dataSource);
+        
+		/*
+		 * try { dataSource.setJdbcUrl(oracleContainer.getJdbcUrl());
+		 * dataSource.setUsername(oracleContainer.getUsername());
+		 * dataSource.setPassword(oracleContainer.getPassword());
+		 * dataSource.setAutoCommit(false);
+		 * 
+		 * when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.
+		 * ofSeconds(60));
+		 * 
+		 * // Prevent DB from getting exhausted during rapid testing
+		 * dataSource.setMaximumPoolSize(8);
+		 * 
+		 * flywayMigrate(dataSource); } catch(Exception e) {
+		 * 
+		 * dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+oracleContainer.getHost()+":"+
+		 * oracleContainer.getFirstMappedPort()+"/CONDUCTOR");
+		 * dataSource.setUsername("conductor"); dataSource.setPassword("conductor");
+		 * dataSource.setAutoCommit(false);
+		 * 
+		 * when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.
+		 * ofSeconds(60));
+		 * 
+		 * // Prevent DB from getting exhausted during rapid testing
+		 * dataSource.setMaximumPoolSize(8);
+		 * 
+		 * flywayMigrate(dataSource); }
+		 */
     }
 
     private void flywayMigrate(DataSource dataSource) {
