@@ -80,9 +80,19 @@ public class OracleMetadataDAOTest {
 	@Before
     public void setup() {
     	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
-    	//oracleContainer = new OracleContainer(DockerImageName.parse("gvenzl/oracle-xe:18.4.0")).withUsername("conductor").withPassword("conductor").withDatabaseName("CONDUCTOR");
-    	oracleContainer = new OracleContainer(DockerImageName.parse("gvenzl/oracle-xe:18.4.0"));
-        oracleContainer.start();
+    	try {
+    		oracleContainer = new OracleContainer(DockerImageName.parse("conductorboot/oracle:18.4.0-xe-test")).withDatabaseName("CONDUCTOR").withUsername("conductor").withPassword("conductor");
+    	}
+    	catch(Exception outerE) {
+    		try {
+    			oracleContainer = new OracleContainer(DockerImageName.parse("conductorboot/oracle:18.4.0-xe-test")).withDatabaseName(name.getMethodName());
+    		}
+    		catch(Exception innerE) {
+    			oracleContainer = new OracleContainer(DockerImageName.parse("conductorboot/oracle:18.4.0-xe-test"));
+    		}
+    	}
+    	oracleContainer.start();
+    	
         testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
         metadataDAO = new OracleMetadataDAO(testUtil.getObjectMapper(), testUtil.getDataSource(),
             testUtil.getTestProperties());
