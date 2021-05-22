@@ -60,11 +60,12 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
 
     public static OracleContainer oracleContainer;
 
-    @Before
+    @SuppressWarnings("resource")
+	@Before
     public void setup() {
     	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
-    	oracleContainer = new OracleContainer(DockerImageName.parse("conductorboot/oracle:19.3.0-ee-test"));
-        oracleContainer.start();
+    	oracleContainer = new OracleContainer(DockerImageName.parse("gvenzl/oracle-xe:18.4.0")).withDatabaseName(name.getMethodName());
+    	oracleContainer.start();
         testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
         executionDAO = new OracleExecutionDAO(testUtil.getObjectMapper(), testUtil.getDataSource());
     }
