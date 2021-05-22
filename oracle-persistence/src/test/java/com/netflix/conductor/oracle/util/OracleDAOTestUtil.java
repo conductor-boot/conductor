@@ -36,6 +36,8 @@ public class OracleDAOTestUtil {
 
     public OracleDAOTestUtil(OracleContainer oracleContainer, ObjectMapper objectMapper) {
 
+    	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
+    	
         this.objectMapper = objectMapper;
 
         this.dataSource = new HikariDataSource();
