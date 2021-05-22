@@ -78,10 +78,9 @@ public class OracleQueueDAOTest {
     @Before
     public void setup() {
     	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
-        oracleContainer = new OracleContainer(DockerImageName.parse("oracleinanutshell/oracle-xe-11g:1.0.0"));
+        oracleContainer = new OracleContainer(DockerImageName.parse("conductorboot/oracle:19.3.0-ee-test"));
         oracleContainer.start();
-    	//oracleContainer.withDatabaseName(name.getMethodName()).start();
-        testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
+    	testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
         queueDAO = new OracleQueueDAO(testUtil.getObjectMapper(), testUtil.getDataSource());
     }
 
