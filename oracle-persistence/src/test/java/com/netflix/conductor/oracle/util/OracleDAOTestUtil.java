@@ -42,7 +42,7 @@ public class OracleDAOTestUtil {
 
         this.dataSource = new HikariDataSource();
 
-    	dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+oracleContainer.getTestHostIpAddress()+":"+oracleContainer.getOraclePort()+"/XEPDB1");
+    	dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+oracleContainer.getHost()+":"+oracleContainer.getOraclePort()+"/XEPDB1");
         dataSource.setUsername("junit_user");
         dataSource.setPassword("junit_user");
         dataSource.setAutoCommit(false);
