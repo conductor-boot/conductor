@@ -34,6 +34,8 @@ services:
         max-size: "1k"
         max-file: "3"
 
+  # The image conductorboot/oracle:19.3.0-ee-test is pre-built with below commented out environment properties. 
+  #To use custom value, use conductorboot/oracle:19.3.0-ee-slim and the below listed environment and volume sections
   oracle:
     #image: conductorboot/oracle:19.3.0-ee-slim
     image: conductorboot/oracle:19.3.0-ee-test

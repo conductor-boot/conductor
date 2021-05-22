@@ -64,7 +64,7 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
 	@Before
     public void setup() {
     	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
-    	oracleContainer = new OracleContainer(DockerImageName.parse("gvenzl/oracle-xe:18.4.0")).withDatabaseName(name.getMethodName());
+    	oracleContainer = new OracleContainer(DockerImageName.parse("gvenzl/oracle-xe:18.4.0"));
     	oracleContainer.start();
         testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
         executionDAO = new OracleExecutionDAO(testUtil.getObjectMapper(), testUtil.getDataSource());
