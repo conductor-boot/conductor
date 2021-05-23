@@ -229,7 +229,7 @@ CREATE TABLE workflow_def_to_workflow (
 
 CREATE SEQUENCE workflow_def_to_workflow_seq START WITH 1 INCREMENT BY 1;
 
-CREATE OR REPLACE TRIGGER workflow_def_to_workflow_seq_tr
+CREATE OR REPLACE TRIGGER workflowdef_to_workflow_seq_tr
  BEFORE INSERT ON workflow_def_to_workflow FOR EACH ROW
  WHEN (NEW.id IS NULL)
 BEGIN
