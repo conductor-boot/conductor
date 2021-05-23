@@ -12,6 +12,12 @@
  */
 package com.netflix.conductor.oracle.dao;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +40,8 @@ import com.netflix.conductor.dao.EventHandlerDAO;
 import com.netflix.conductor.dao.MetadataDAO;
 import com.netflix.conductor.metrics.Monitors;
 import com.netflix.conductor.oracle.config.OracleProperties;
+
+import oracle.jdbc.OracleResultSet;
 
 public class OracleMetadataDAO extends OracleBaseDAO implements MetadataDAO, EventHandlerDAO {
 
@@ -255,10 +263,31 @@ public class OracleMetadataDAO extends OracleBaseDAO implements MetadataDAO, Eve
             return q.executeAndFetch(rs -> {
                 List<EventHandler> handlers = new ArrayList<>();
                 while (rs.next()) {
-                    EventHandler h = readValue(rs.getString(1), EventHandler.class);
-                    if (!activeOnly || h.isActive()) {
-                        handlers.add(h);
-                    }
+                    try {
+                		OracleResultSet oracleResultSet = rs.unwrap(OracleResultSet.class);
+                     	Blob blob = oracleResultSet.getBlob(1);
+                     	 if(null!=blob) {
+                         	StringBuilder textBuilder = new StringBuilder();
+                             try (Reader reader = new BufferedReader(new InputStreamReader
+                               (blob.getBinaryStream(), Charset.forName(StandardCharsets.UTF_8.name())))) {
+                                 int c = 0;
+                                 while ((c = reader.read()) != -1) {
+                                     textBuilder.append((char) c);
+                                 }
+                             }
+                            
+                             EventHandler h = readValue(textBuilder.toString(), EventHandler.class);
+                             if (!activeOnly || h.isActive()) {
+                                 handlers.add(h);
+                             }
+                         }
+                     }
+                     catch(Exception e) {
+                    	 EventHandler h = readValue(rs.getString(1), EventHandler.class);
+                         if (!activeOnly || h.isActive()) {
+                             handlers.add(h);
+                         }
+                     }
                 }
 
                 return handlers;

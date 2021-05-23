@@ -17,12 +17,11 @@ import javax.sql.DataSource;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.conductor.dao.ExecutionDAO;
@@ -37,12 +36,12 @@ import com.netflix.conductor.oracle.dao.OracleQueueDAO;
 @ConditionalOnProperty(name = "conductor.db.type", havingValue = "oracle")
 // Import the DataSourceAutoConfiguration when oracle database is selected.
 // By default the datasource configuration is excluded in the main module.
-@Import(DataSourceAutoConfiguration.class)
 public class OracleConfiguration {
 	
 	@Autowired
 	public DataSource dataSource;
 
+	@Primary
 	@Bean(initMethod = "migrate")
 	@DependsOn("dataSource")
 	Flyway flyway() {
