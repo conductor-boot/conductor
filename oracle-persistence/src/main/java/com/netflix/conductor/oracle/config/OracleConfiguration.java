@@ -40,7 +40,7 @@ import com.netflix.conductor.oracle.dao.OracleQueueDAO;
 @Import(DataSourceAutoConfiguration.class)
 public class OracleConfiguration {
 	
-	@Bean(initMethod = "migrate", name = "flyway")
+	@Bean
 	public Flyway flyway(DataSource dataSource) {
 	    Flyway flyway = new Flyway();
 	    flyway.setLocations("classpath:db/migration_oracle");

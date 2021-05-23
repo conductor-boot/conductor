@@ -45,8 +45,9 @@ import com.netflix.conductor.core.events.queue.Message;
 import com.netflix.conductor.oracle.util.OracleDAOTestUtil;
 import com.netflix.conductor.oracle.util.Query;
 import com.zaxxer.hikari.HikariDataSource;
+import com.netflix.conductor.oracle.config.OracleTestConfiguration;
 
-@ContextConfiguration(classes = {TestObjectMapperConfiguration.class})
+@ContextConfiguration(classes = {TestObjectMapperConfiguration.class, OracleTestConfiguration.class})
 @RunWith(SpringRunner.class)
 public class OracleQueueDAOTest {
 

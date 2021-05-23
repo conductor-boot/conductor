@@ -36,9 +36,10 @@ import com.netflix.conductor.common.run.Workflow;
 import com.netflix.conductor.dao.ExecutionDAO;
 import com.netflix.conductor.dao.ExecutionDAOTest;
 import com.netflix.conductor.oracle.util.OracleDAOTestUtil;
+import com.netflix.conductor.oracle.config.OracleTestConfiguration;
 import com.zaxxer.hikari.HikariDataSource;
 
-@ContextConfiguration(classes = {TestObjectMapperConfiguration.class})
+@ContextConfiguration(classes = {TestObjectMapperConfiguration.class, OracleTestConfiguration.class})
 @RunWith(SpringRunner.class)
 public class OracleExecutionDAOTest extends ExecutionDAOTest {
 

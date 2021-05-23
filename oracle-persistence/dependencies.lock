@@ -1,7 +1,7 @@
 {
     "annotationProcessor": {
         "org.springframework.boot:spring-boot-configuration-processor": {
-            "locked": "2.2.4.RELEASE"
+            "locked": "2.3.1.RELEASE"
         }
     },
     "compileClasspath": {
@@ -94,20 +94,20 @@
             ]
         },
         "org.springframework.boot:spring-boot": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-autoconfigure",
                 "org.springframework.boot:spring-boot-starter"
             ]
         },
         "org.springframework.boot:spring-boot-autoconfigure": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-starter"
             ]
         },
         "org.springframework.boot:spring-boot-dependencies": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot",
                 "org.springframework.boot:spring-boot-autoconfigure",
@@ -116,10 +116,10 @@
             ]
         },
         "org.springframework.boot:spring-boot-starter": {
-            "locked": "2.2.4.RELEASE"
+            "locked": "2.3.1.RELEASE"
         },
         "org.springframework.boot:spring-boot-starter-logging": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-starter"
             ]
@@ -769,7 +769,7 @@
             ]
         },
         "org.springframework.boot:spring-boot": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-autoconfigure",
                 "org.springframework.boot:spring-boot-starter",
@@ -778,14 +778,14 @@
             ]
         },
         "org.springframework.boot:spring-boot-autoconfigure": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-starter",
                 "org.springframework.boot:spring-boot-test-autoconfigure"
             ]
         },
         "org.springframework.boot:spring-boot-dependencies": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot",
                 "org.springframework.boot:spring-boot-autoconfigure",
@@ -798,32 +798,32 @@
             ]
         },
         "org.springframework.boot:spring-boot-starter": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-starter-test"
             ]
         },
         "org.springframework.boot:spring-boot-starter-log4j2": {
-            "locked": "2.2.4.RELEASE"
+            "locked": "2.3.1.RELEASE"
         },
         "org.springframework.boot:spring-boot-starter-logging": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-starter"
             ]
         },
         "org.springframework.boot:spring-boot-starter-test": {
-            "locked": "2.2.4.RELEASE"
+            "locked": "2.3.1.RELEASE"
         },
         "org.springframework.boot:spring-boot-test": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-starter-test",
                 "org.springframework.boot:spring-boot-test-autoconfigure"
             ]
         },
         "org.springframework.boot:spring-boot-test-autoconfigure": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-starter-test"
             ]
@@ -1453,7 +1453,7 @@
             ]
         },
         "org.springframework.boot:spring-boot": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-autoconfigure",
                 "org.springframework.boot:spring-boot-starter",
@@ -1462,14 +1462,14 @@
             ]
         },
         "org.springframework.boot:spring-boot-autoconfigure": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-starter",
                 "org.springframework.boot:spring-boot-test-autoconfigure"
             ]
         },
         "org.springframework.boot:spring-boot-dependencies": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot",
                 "org.springframework.boot:spring-boot-autoconfigure",
@@ -1482,32 +1482,32 @@
             ]
         },
         "org.springframework.boot:spring-boot-starter": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-starter-test"
             ]
         },
         "org.springframework.boot:spring-boot-starter-log4j2": {
-            "locked": "2.2.4.RELEASE"
+            "locked": "2.3.1.RELEASE"
         },
         "org.springframework.boot:spring-boot-starter-logging": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-starter"
             ]
         },
         "org.springframework.boot:spring-boot-starter-test": {
-            "locked": "2.2.4.RELEASE"
+            "locked": "2.3.1.RELEASE"
         },
         "org.springframework.boot:spring-boot-test": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-starter-test",
                 "org.springframework.boot:spring-boot-test-autoconfigure"
             ]
         },
         "org.springframework.boot:spring-boot-test-autoconfigure": {
-            "locked": "2.2.4.RELEASE",
+            "locked": "2.3.1.RELEASE",
             "transitive": [
                 "org.springframework.boot:spring-boot-starter-test"
             ]

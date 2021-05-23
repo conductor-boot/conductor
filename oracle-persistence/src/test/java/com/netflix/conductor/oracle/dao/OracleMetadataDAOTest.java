@@ -48,8 +48,9 @@ import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
 import com.netflix.conductor.core.exception.ApplicationException;
 import com.netflix.conductor.oracle.util.OracleDAOTestUtil;
 import com.zaxxer.hikari.HikariDataSource;
+import com.netflix.conductor.oracle.config.OracleTestConfiguration;
 
-@ContextConfiguration(classes = {TestObjectMapperConfiguration.class})
+@ContextConfiguration(classes = {TestObjectMapperConfiguration.class, OracleTestConfiguration.class})
 @RunWith(SpringRunner.class)
 public class OracleMetadataDAOTest {
 
