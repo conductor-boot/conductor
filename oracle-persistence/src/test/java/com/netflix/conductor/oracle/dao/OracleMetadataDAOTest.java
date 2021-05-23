@@ -77,8 +77,8 @@ public class OracleMetadataDAOTest {
     	System.setProperty("oracle.jdbc.fanEnabled", "false");
     	
     	oracleContainer = new OracleContainer(DockerImageName.parse(
-	   			 //"conductorboot/oracle:18.4.0-xe-slim-test"));
-   			"conductorboot/oracle:18.4.0-xe-slim"));
+	   			 "conductorboot/oracle:18.4.0-xe-slim-test"));
+    			 //"conductorboot/oracle:18.4.0-xe-slim"));
 		oracleContainer
 		//.withInitScript("init_test_db.sql")
 		.withStartupTimeoutSeconds(900)
@@ -87,7 +87,7 @@ public class OracleMetadataDAOTest {
 		//.withPassword("junit_user");
 		//.withUsername("sys as sysdba")
 		//.withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd")
-		.withUsername("sys as sysdba")
+		//.withUsername("sys as sysdba")
 		.withPassword("Str0ngPassw0rd")
 		.withInitScript("INIT_SCRIPT.sql");
 		
