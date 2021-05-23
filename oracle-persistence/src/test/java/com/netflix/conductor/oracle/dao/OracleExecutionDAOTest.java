@@ -69,6 +69,7 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
 		//.withUsername("junit_user")
 		//.withPassword("junit_user");
 		//.withUsername("sys as sysdba")
+		.withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd")
 		.withPassword("Str0ngPassw0rd")
 		.withInitScript("INIT_SCRIPT.sql");    	
     	oracleContainer.start();
