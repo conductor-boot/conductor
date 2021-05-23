@@ -80,8 +80,10 @@ public class OracleQueueDAOTest {
 		//.withInitScript("init_test_db.sql")
 		.withStartupTimeoutSeconds(900)
 		.withConnectTimeoutSeconds(900)
+		.withUsername("junit_user")
+		.withPassword("junit_user");
 		//.withUsername("sys as sysdba")
-		.withPassword("Str0ngPassw0rd");
+		//.withPassword("Str0ngPassw0rd");
 		
     	oracleContainer.start();
     	
