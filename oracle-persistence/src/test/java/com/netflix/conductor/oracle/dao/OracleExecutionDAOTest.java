@@ -60,7 +60,8 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
     	System.setProperty("oracle.jdbc.fanEnabled", "false");
     	
     	oracleContainer = new OracleContainer(DockerImageName.parse(
-	   			 "oracleinanutshell/oracle-xe-11g"));
+	   			 //"oracleinanutshell/oracle-xe-11g"));
+    			"conductorboot/oracle:11g-xe"));
    			 //"conductorboot/oracle:18.4.0-xe-slim")); // To be enabled once Github Actions supports Oracle 18 XE based CICD
 		oracleContainer
 		.withStartupTimeoutSeconds(900)
