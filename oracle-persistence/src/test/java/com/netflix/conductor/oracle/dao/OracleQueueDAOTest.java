@@ -84,7 +84,7 @@ public class OracleQueueDAOTest {
 		//.withUsername("junit_user")
 		//.withPassword("junit_user");
 		//.withUsername("sys as sysdba")
-		.withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd")
+		//.withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd")
 		.withUsername("sys as sysdba")
 		.withPassword("Str0ngPassw0rd")
 		.withInitScript("INIT_SCRIPT.sql");
