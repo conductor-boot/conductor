@@ -63,13 +63,12 @@ public class OracleDAOTestUtil {
     }
 
     private void flywayMigrate(DataSource dataSource) {
-        FluentConfiguration fluentConfiguration = Flyway.configure()
-                .table("schema_version")
-                .dataSource(dataSource)
-                .placeholderReplacement(false)
-        		.locations(Paths.get("db", "migration_oracle").toString());
-
-        Flyway flyway = fluentConfiguration.load();
+        
+        Flyway flyway = new Flyway();
+        flyway.setLocations(Paths.get("db", "migration_oracle").toString());
+        flyway.setDataSource(dataSource);
+        flyway.setPlaceholderReplacement(false);
+        flyway.setTable("schema_version");
         flyway.migrate();
     }
 

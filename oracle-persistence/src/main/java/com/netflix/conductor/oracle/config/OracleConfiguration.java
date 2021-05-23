@@ -14,8 +14,9 @@ package com.netflix.conductor.oracle.config;
 
 import javax.sql.DataSource;
 
+import org.flywaydb.core.Flyway;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.flyway.FlywayConfigurationCustomizer;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -38,14 +39,18 @@ import com.netflix.conductor.oracle.dao.OracleQueueDAO;
 // By default the datasource configuration is excluded in the main module.
 @Import(DataSourceAutoConfiguration.class)
 public class OracleConfiguration {
+	
+	@Autowired
+	public DataSource dataSource;
 
-	@Bean
-    public FlywayConfigurationCustomizer flywayConfigurationCustomizer(OracleProperties properties) {
-			if(properties.isFlywayBaselineOnMigrate())
-        return configuration -> configuration.locations("classpath:db/migration_oracle").baselineOnMigrate(properties.isFlywayBaselineOnMigrate()).baselineVersion(String.valueOf(properties.getFlywayBaselineVersion()));
-			else
-				return configuration -> configuration.locations("classpath:db/migration_oracle");
-    }
+	@Bean(initMethod = "migrate")
+	@DependsOn("dataSource")
+	Flyway flyway() {
+	    Flyway flyway = new Flyway();
+	    flyway.setLocations("classpath:db/migration_oracle");
+	    flyway.setDataSource(dataSource);
+	    return flyway;
+	}
 
     @Bean
     @DependsOn({"flyway", "flywayInitializer"})

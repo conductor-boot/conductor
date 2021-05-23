@@ -60,19 +60,15 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
     	System.setProperty("oracle.jdbc.fanEnabled", "false");
     	
     	oracleContainer = new OracleContainer(DockerImageName.parse(
-    			"conductorboot/oracle:18.4.0-xe-slim"));
-				 //"conductorboot/oracle:18.4.0-xe-slim"));
+	   			 "oracleinanutshell/oracle-xe-11g"));
+   			 //"conductorboot/oracle:18.4.0-xe-slim")); // To be enabled once Github Actions supports Oracle 18 XE based CICD
 		oracleContainer
-		//.withInitScript("init_test_db.sql")
 		.withStartupTimeoutSeconds(900)
 		.withConnectTimeoutSeconds(900)
-		//.withUsername("junit_user")
-		//.withPassword("junit_user");
-		//.withUsername("sys as sysdba")
-		//.withEnv("ORACLE_PASSWORD", "Str0ngPassw0rd")
-		//.withUsername("sys as sysdba")
-		.withPassword("Str0ngPassw0rd")
+		//.withPassword("Str0ngPassw0rd")  // To be enabled once Github Actions supports Oracle 18 XE based CICD
 		.withInitScript("INIT_SCRIPT.sql");
+		
+		oracleContainer.start();
     	
         testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
         executionDAO = new OracleExecutionDAO(testUtil.getObjectMapper(), testUtil.getDataSource());
