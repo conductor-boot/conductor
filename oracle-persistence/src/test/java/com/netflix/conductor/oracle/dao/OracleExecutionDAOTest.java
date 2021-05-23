@@ -60,7 +60,8 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
     	System.setProperty("oracle.jdbc.fanEnabled", "false");
     	
     	oracleContainer = new OracleContainer(DockerImageName.parse(
-	   			 "conductorboot/oracle:18.4.0-xe-slim-test"));
+	   			 //"conductorboot/oracle:18.4.0-xe-slim-test"));
+   			"conductorboot/oracle:18.4.0-xe-slim"));
 		oracleContainer
 		//.withInitScript("init_test_db.sql")
 		.withStartupTimeoutSeconds(900)
@@ -68,8 +69,8 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
 		//.withUsername("junit_user")
 		//.withPassword("junit_user");
 		//.withUsername("sys as sysdba")
-		.withPassword("Str0ngPassw0rd");
-    	
+		.withPassword("Str0ngPassw0rd")
+		.withInitScript("INIT_SCRIPT.sql");    	
     	oracleContainer.start();
     	
         testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
