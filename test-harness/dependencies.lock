@@ -2982,6 +2982,12 @@
                 "com.netflix.conductor:conductor-postgres-persistence"
             ]
         },
+        "org.flywaydb:flyway-core": {
+            "locked": "4.2.0",
+            "transitive": [
+                "com.netflix.conductor:conductor-oracle-persistence"
+            ]
+        },
         "org.glassfish.jaxb:jaxb-runtime": {
             "locked": "2.3.3",
             "transitive": [

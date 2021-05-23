@@ -41,7 +41,6 @@ public class OracleConfiguration {
 	@Autowired
 	public DataSource dataSource;
 
-	@Primary
 	@Bean(initMethod = "migrate")
 	@DependsOn("dataSource")
 	Flyway flyway() {
