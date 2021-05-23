@@ -59,9 +59,6 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
 	@Before
     public void setup() {
     	
-    	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
-    	System.setProperty("oracle.jdbc.fanEnabled", "false");
-    	
     	testUtil = new OracleDAOTestUtil(hikariDataSource, objectMapper);
         executionDAO = new OracleExecutionDAO(testUtil.getObjectMapper(), testUtil.getDataSource());
     }

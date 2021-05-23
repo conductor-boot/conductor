@@ -48,26 +48,20 @@ public class OracleConfiguration {
 	    return flyway;
 	}
 	
-	@Bean("flywayInitializer")
-	@DependsOn({"flyway"})
-    public FlywayMigrationInitializer flywayInitializer(Flyway flyway) {
-        return new FlywayMigrationInitializer(flyway, null);
-    }
-
     @Bean
-    @DependsOn({"flyway", "flywayInitializer"})
+    @DependsOn({"flyway"})
     public MetadataDAO oracleMetadataDAO(ObjectMapper objectMapper, DataSource dataSource, OracleProperties properties) {
         return new OracleMetadataDAO(objectMapper, dataSource, properties);
     }
 
     @Bean
-    @DependsOn({"flyway", "flywayInitializer"})
+    @DependsOn({"flyway"})
     public ExecutionDAO oracleExecutionDAO(ObjectMapper objectMapper, DataSource dataSource) {
         return new OracleExecutionDAO(objectMapper, dataSource);
     }
 
     @Bean
-    @DependsOn({"flyway", "flywayInitializer"})
+    @DependsOn({"flyway"})
     public QueueDAO oracleQueueDAO(ObjectMapper objectMapper, DataSource dataSource) {
         return new OracleQueueDAO(objectMapper, dataSource);
     }

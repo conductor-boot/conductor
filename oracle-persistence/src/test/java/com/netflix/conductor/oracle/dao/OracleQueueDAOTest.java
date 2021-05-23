@@ -72,9 +72,6 @@ public class OracleQueueDAOTest {
 	@Before
     public void setup() {
     	
-    	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
-    	System.setProperty("oracle.jdbc.fanEnabled", "false");
-    	
     	testUtil = new OracleDAOTestUtil(hikariDataSource, objectMapper);
         queueDAO = new OracleQueueDAO(testUtil.getObjectMapper(), testUtil.getDataSource());
     }

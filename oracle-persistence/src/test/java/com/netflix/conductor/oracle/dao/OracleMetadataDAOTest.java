@@ -73,9 +73,6 @@ public class OracleMetadataDAOTest {
 	@Before
     public void setup() {
     	
-    	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
-    	System.setProperty("oracle.jdbc.fanEnabled", "false");
-    	
     	testUtil = new OracleDAOTestUtil(hikariDataSource, objectMapper);
         metadataDAO = new OracleMetadataDAO(testUtil.getObjectMapper(), testUtil.getDataSource(),
             testUtil.getTestProperties());

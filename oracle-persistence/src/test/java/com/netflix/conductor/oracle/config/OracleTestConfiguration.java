@@ -14,6 +14,10 @@ public class OracleTestConfiguration {
 
 	@Bean
 	public HikariDataSource hikariDataSource() {
+		
+		System.setProperty("oracle.jdbc.timezoneAsRegion","false");
+    	System.setProperty("oracle.jdbc.fanEnabled", "false");
+    	
 		oracleContainer = new OracleContainer(DockerImageName.parse(
 	   			 //"oracleinanutshell/oracle-xe-11g"));
    			"conductorboot/oracle:11g-xe"));
@@ -23,6 +27,8 @@ public class OracleTestConfiguration {
 		.withConnectTimeoutSeconds(900)
 		//.withPassword("Str0ngPassw0rd")  // To be enabled once Github Actions supports Oracle 18 XE based CICD
 		.withInitScript("INIT_SCRIPT.sql");
+		
+		oracleContainer.start();
 		
 		HikariDataSource hikariDataSource = new HikariDataSource();
 		
