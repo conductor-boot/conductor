@@ -42,14 +42,8 @@ public class OracleDAOTestUtil {
 
         this.dataSource = new HikariDataSource();
 
-    	//dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+oracleContainer.getHost()+":"+oracleContainer.getOraclePort()+"/XEPDB1");
-        //dataSource.setUsername("junit_user");
-        //dataSource.setPassword("junit_user");
-        
-        
-        //dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+oracleContainer.getHost()+":"+oracleContainer.getOraclePort()+"/XEPDB1");
-        
-        dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+ oracleContainer.getHost() + ":" + oracleContainer.getOraclePort() + "/" + oracleContainer.getSid());
+    	dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+oracleContainer.getHost()+":"+oracleContainer.getOraclePort()+"/XEPDB1");
+        //dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+ oracleContainer.getHost() + ":" + oracleContainer.getOraclePort() + "/" + oracleContainer.getSid());
         
         dataSource.setUsername("junit_user");
         dataSource.setPassword("junit_user");
