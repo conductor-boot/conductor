@@ -56,7 +56,7 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
     @SuppressWarnings("resource")
 	@Before
     public void setup() {
-    	
+    	oracleContainer.start();
     	testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
         executionDAO = new OracleExecutionDAO(testUtil.getObjectMapper(), testUtil.getDataSource());
     }

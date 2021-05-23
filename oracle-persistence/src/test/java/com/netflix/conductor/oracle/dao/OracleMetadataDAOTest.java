@@ -73,7 +73,7 @@ public class OracleMetadataDAOTest {
     @SuppressWarnings("resource")
 	@Before
     public void setup() {
-    	
+    	oracleContainer.start();
     	testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
         metadataDAO = new OracleMetadataDAO(testUtil.getObjectMapper(), testUtil.getDataSource(),
             testUtil.getTestProperties());

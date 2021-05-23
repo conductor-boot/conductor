@@ -72,7 +72,7 @@ public class OracleQueueDAOTest {
     @SuppressWarnings("resource")
 	@Before
     public void setup() {
-    	
+    	oracleContainer.start();
     	testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
         queueDAO = new OracleQueueDAO(testUtil.getObjectMapper(), testUtil.getDataSource());
     }
