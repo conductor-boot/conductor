@@ -244,7 +244,7 @@ CREATE TABLE workflow_pending (
   workflow_type varchar2(255) NOT NULL,
   workflow_id varchar2(255) NOT NULL,
   PRIMARY KEY (id),
-  CONSTRAINT unique_workflow_type_workflow_id UNIQUE (workflow_type,workflow_id)
+  CONSTRAINT unique_workflowtype_workflowid UNIQUE (workflow_type,workflow_id)
 );
 
 CREATE SEQUENCE workflow_pending_seq START WITH 1 INCREMENT BY 1;
