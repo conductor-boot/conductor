@@ -75,7 +75,7 @@ public class OracleQueueDAOTest {
     	System.setProperty("oracle.jdbc.fanEnabled", "false");
     	
     	oracleContainer = new OracleContainer(DockerImageName.parse(
-    			"conductorboot/oracle:18.4.0-xe-slim-test"));
+    			"conductorboot/oracle:18.4.0-xe-slim"));
 				 //"conductorboot/oracle:18.4.0-xe-slim"));
 		oracleContainer
 		//.withInitScript("init_test_db.sql")
