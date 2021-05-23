@@ -32,7 +32,7 @@ public class OracleTestConfiguration {
 		
 		HikariDataSource hikariDataSource = new HikariDataSource();
 		
-		hikariDataSource.setJdbcUrl("jdbc:oracle:thin:@//"+ oracleContainer.getHost() + ":" + oracleContainer.getOraclePort() + "/XE");
+		hikariDataSource.setJdbcUrl("jdbc:oracle:thin:@//"+ oracleContainer.getHost() + ":" + oracleContainer.getOraclePort()  + "/" + oracleContainer.getSid());
         
 		hikariDataSource.setUsername("junit_user");
 		hikariDataSource.setPassword("junit_user");
@@ -42,7 +42,7 @@ public class OracleTestConfiguration {
         
         //Prevent DB from getting exhausted during rapid testing
 		hikariDataSource.setMaximumPoolSize(24);
-
+		
         return hikariDataSource;
     
     }

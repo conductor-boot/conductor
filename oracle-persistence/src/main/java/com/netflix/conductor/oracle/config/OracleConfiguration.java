@@ -16,7 +16,6 @@ import javax.sql.DataSource;
 
 import org.flywaydb.core.Flyway;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.flyway.FlywayMigrationInitializer;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -41,14 +40,6 @@ import com.netflix.conductor.oracle.dao.OracleQueueDAO;
 public class OracleConfiguration {
 	
 	@Bean
-	public Flyway flyway(DataSource dataSource) {
-	    Flyway flyway = new Flyway();
-	    flyway.setLocations("classpath:db/migration_oracle");
-	    flyway.setDataSource(dataSource);
-	    return flyway;
-	}
-	
-    @Bean
     @DependsOn({"flyway"})
     public MetadataDAO oracleMetadataDAO(ObjectMapper objectMapper, DataSource dataSource, OracleProperties properties) {
         return new OracleMetadataDAO(objectMapper, dataSource, properties);
