@@ -14,6 +14,7 @@
 -- limitations under the License.
 --
 
+ALTER SESSION SET CONTAINER=XEPDB1;
 CREATE USER junit_user;
 GRANT CONNECT, RESOURCE, CREATE SESSION, DBA, DV_REALM_RESOURCE TO junit_user CONTAINER=ALL;
 ALTER USER  junit_user IDENTIFIED BY "junit_user";
