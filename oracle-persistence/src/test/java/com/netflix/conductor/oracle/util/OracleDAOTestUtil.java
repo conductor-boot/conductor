@@ -21,7 +21,6 @@ import java.time.Duration;
 import javax.sql.DataSource;
 
 import org.flywaydb.core.Flyway;
-import org.flywaydb.core.api.configuration.FluentConfiguration;
 import org.testcontainers.containers.OracleContainer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
