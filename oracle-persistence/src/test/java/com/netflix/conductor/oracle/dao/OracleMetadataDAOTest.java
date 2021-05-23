@@ -39,8 +39,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.containers.OracleContainer;
-import org.testcontainers.utility.DockerImageName;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.conductor.common.config.TestObjectMapperConfiguration;
@@ -49,6 +47,7 @@ import com.netflix.conductor.common.metadata.tasks.TaskDef;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
 import com.netflix.conductor.core.exception.ApplicationException;
 import com.netflix.conductor.oracle.util.OracleDAOTestUtil;
+import com.zaxxer.hikari.HikariDataSource;
 
 @ContextConfiguration(classes = {TestObjectMapperConfiguration.class})
 @RunWith(SpringRunner.class)
@@ -66,8 +65,8 @@ public class OracleMetadataDAOTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
-    public static OracleContainer oracleContainer;
-    
+    @Autowired
+    HikariDataSource hikariDataSource;
 
     @SuppressWarnings("resource")
 	@Before
@@ -76,19 +75,7 @@ public class OracleMetadataDAOTest {
     	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
     	System.setProperty("oracle.jdbc.fanEnabled", "false");
     	
-    	oracleContainer = new OracleContainer(DockerImageName.parse(
-    			 //"oracleinanutshell/oracle-xe-11g"));
-    			"conductorboot/oracle:11g-xe"));
-  			 //"conductorboot/oracle:18.4.0-xe-slim")); // To be enabled once Github Actions supports Oracle 18 XE based CICD
-		oracleContainer
-		.withStartupTimeoutSeconds(900)
-		.withConnectTimeoutSeconds(900)
-		//.withPassword("Str0ngPassw0rd")  // To be enabled once Github Actions supports Oracle 18 XE based CICD
-		.withInitScript("INIT_SCRIPT.sql");
-		
-		oracleContainer.start();
-    	
-        testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
+    	testUtil = new OracleDAOTestUtil(hikariDataSource, objectMapper);
         metadataDAO = new OracleMetadataDAO(testUtil.getObjectMapper(), testUtil.getDataSource(),
             testUtil.getTestProperties());
     }

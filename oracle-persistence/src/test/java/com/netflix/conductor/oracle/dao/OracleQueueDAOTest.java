@@ -37,8 +37,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.containers.OracleContainer;
-import org.testcontainers.utility.DockerImageName;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
@@ -46,6 +44,7 @@ import com.netflix.conductor.common.config.TestObjectMapperConfiguration;
 import com.netflix.conductor.core.events.queue.Message;
 import com.netflix.conductor.oracle.util.OracleDAOTestUtil;
 import com.netflix.conductor.oracle.util.Query;
+import com.zaxxer.hikari.HikariDataSource;
 
 @ContextConfiguration(classes = {TestObjectMapperConfiguration.class})
 @RunWith(SpringRunner.class)
@@ -65,8 +64,9 @@ public class OracleQueueDAOTest {
     @Rule
     public ExpectedException expected = ExpectedException.none();
 
-    public static OracleContainer oracleContainer;
-   
+    @Autowired
+    HikariDataSource hikariDataSource;
+
     @SuppressWarnings("resource")
 	@Before
     public void setup() {
@@ -74,19 +74,7 @@ public class OracleQueueDAOTest {
     	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
     	System.setProperty("oracle.jdbc.fanEnabled", "false");
     	
-    	oracleContainer = new OracleContainer(DockerImageName.parse(
-    			 //"oracleinanutshell/oracle-xe-11g"));
-    			"conductorboot/oracle:11g-xe"));
-  			 //"conductorboot/oracle:18.4.0-xe-slim")); // To be enabled once Github Actions supports Oracle 18 XE based CICD
-		oracleContainer
-		.withStartupTimeoutSeconds(900)
-		.withConnectTimeoutSeconds(900)
-		//.withPassword("Str0ngPassw0rd")  // To be enabled once Github Actions supports Oracle 18 XE based CICD
-		.withInitScript("INIT_SCRIPT.sql");
-		
-		oracleContainer.start();
-    	
-    	testUtil = new OracleDAOTestUtil(oracleContainer, objectMapper);
+    	testUtil = new OracleDAOTestUtil(hikariDataSource, objectMapper);
         queueDAO = new OracleQueueDAO(testUtil.getObjectMapper(), testUtil.getDataSource());
     }
 

@@ -21,7 +21,6 @@ import java.time.Duration;
 import javax.sql.DataSource;
 
 import org.flywaydb.core.Flyway;
-import org.testcontainers.containers.OracleContainer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.conductor.oracle.config.OracleProperties;
@@ -33,28 +32,13 @@ public class OracleDAOTestUtil {
     private final OracleProperties properties = mock(OracleProperties.class);
     private final ObjectMapper objectMapper;
 
-    public OracleDAOTestUtil(OracleContainer oracleContainer, ObjectMapper objectMapper) {
+    public OracleDAOTestUtil(HikariDataSource dataSource, ObjectMapper objectMapper) {
 
-    	System.setProperty("oracle.jdbc.timezoneAsRegion","false");
-    	
-        this.objectMapper = objectMapper;
+    	this.objectMapper = objectMapper;
 
-        this.dataSource = new HikariDataSource();
+        this.dataSource = dataSource;
 
-    	//dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+oracleContainer.getHost()+":"+oracleContainer.getOraclePort()+"/XEPDB1");
-        //dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+ oracleContainer.getHost() + ":" + oracleContainer.getOraclePort() + "/" + oracleContainer.getSid());
-        dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+ oracleContainer.getHost() + ":" + oracleContainer.getOraclePort() + "/XE");
-        
-        dataSource.setUsername("junit_user");
-        dataSource.setPassword("junit_user");
-        
-        
-        dataSource.setAutoCommit(false);
-        
-        when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.ofSeconds(60));
-
-        // Prevent DB from getting exhausted during rapid testing
-        dataSource.setMaximumPoolSize(8);
+    	when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.ofSeconds(60));
 
         flywayMigrate(dataSource);
     
