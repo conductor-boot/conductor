@@ -6,6 +6,7 @@ dependencies {
     testImplementation project(':conductor-rest')
     testImplementation project(':conductor-core')
     testImplementation project(':conductor-contribs')
+    testImplementation project(':conductor-oracle-persistence')
     testImplementation project(':conductor-redis-persistence')
     testImplementation project(':conductor-mysql-persistence')
     testImplementation project(':conductor-postgres-persistence')
