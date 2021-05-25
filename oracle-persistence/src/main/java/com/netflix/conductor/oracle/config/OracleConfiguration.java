@@ -15,7 +15,6 @@ package com.netflix.conductor.oracle.config;
 import javax.sql.DataSource;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.flyway.FlywayConfigurationCustomizer;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -38,12 +37,6 @@ import com.netflix.conductor.oracle.dao.OracleQueueDAO;
 // By default the datasource configuration is excluded in the main module.
 @Import(DataSourceAutoConfiguration.class)
 public class OracleConfiguration {
-	
-	@Bean
-    public FlywayConfigurationCustomizer flywayConfigurationCustomizer() {
-        // override the default location.
-        return configuration -> configuration.locations("classpath:db/migration_oracle");
-    }
 	
 	@Bean
     @DependsOn({"flyway"})

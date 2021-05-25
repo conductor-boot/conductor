@@ -21,7 +21,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
@@ -29,8 +28,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import javax.sql.DataSource;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.flywaydb.core.Flyway;
@@ -97,31 +94,11 @@ public class OracleMetadataDAOTest {
     }
     
     private void flywayMigrate() {
-		
-		try {
-			Flyway flyway = Flyway.class.getConstructor().newInstance();
-			flyway.getClass().getMethod("setLocations", String.class).invoke(flyway, Paths.get("db", "migration_oracle").toString());
-			flyway.getClass().getMethod("setDataSource", DataSource.class).invoke(flyway, dataSource);
-			flyway.getClass().getMethod("migrate").invoke(flyway);
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		Flyway flyway = new Flyway();
+		//flyway.setLocations(Paths.get("db", "migration_oracle").toString());
+		flyway.setDataSource(dataSource);
+		flyway.migrate();
     }
 
     @Test
