@@ -78,7 +78,7 @@
             ]
         },
         "org.flywaydb:flyway-core": {
-            "locked": "6.4.4"
+            "locked": "4.0.3"
         },
         "org.slf4j:jul-to-slf4j": {
             "locked": "1.7.30",
