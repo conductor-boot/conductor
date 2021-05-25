@@ -34,7 +34,6 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -74,21 +73,21 @@ public class OracleQueueDAOTest {
 
     @Test
     public void complexQueueTest() {
-        String queueName = "TestQueue__1";
+        String queueName = "TestQueue";
         long offsetTimeInSecond = 0;
 
         for (int i = 0; i < 10; i++) {
-            String messageId = "msg__" + i;
+            String messageId = "msg" + i;
             queueDAO.push(queueName, messageId, offsetTimeInSecond);
         }
         int size = queueDAO.getSize(queueName);
         assertEquals(10, size);
         Map<String, Long> details = queueDAO.queuesDetail();
-        assertEquals(1, details.size());
+        assertEquals(4, details.size());
         assertEquals(10L, details.get(queueName).longValue());
 
         for (int i = 0; i < 10; i++) {
-            String messageId = "msg__" + i;
+            String messageId = "msg" + i;
             queueDAO.pushIfNotExists(queueName, messageId, offsetTimeInSecond);
         }
 
@@ -106,7 +105,7 @@ public class OracleQueueDAOTest {
         popped.forEach(messageId -> queueDAO.ack(queueName, messageId));
 
         verbose = queueDAO.queuesDetailVerbose();
-        assertEquals(1, verbose.size());
+        assertEquals(4, verbose.size());
         shardSize = verbose.get(queueName).get("a").get("size");
         unackedSize = verbose.get(queueName).get("a").get("uacked");
         assertEquals(0, shardSize);
@@ -117,14 +116,14 @@ public class OracleQueueDAOTest {
         assertEquals(0, popped.size());
 
         for (int i = 0; i < 10; i++) {
-            String messageId = "msg__" + i;
+            String messageId = "msg" + i;
             queueDAO.pushIfNotExists(queueName, messageId, offsetTimeInSecond);
         }
         size = queueDAO.getSize(queueName);
         assertEquals(10, size);
 
         for (int i = 0; i < 10; i++) {
-            String messageId = "msg__" + i;
+            String messageId = "msg" + i;
             assertTrue(queueDAO.containsMessage(queueName, messageId));
             queueDAO.remove(queueName, messageId);
         }
@@ -133,7 +132,7 @@ public class OracleQueueDAOTest {
         assertEquals(0, size);
 
         for (int i = 0; i < 10; i++) {
-            String messageId = "msg__" + i;
+            String messageId = "msg" + i;
             queueDAO.pushIfNotExists(queueName, messageId, offsetTimeInSecond);
         }
         queueDAO.flush(queueName);
