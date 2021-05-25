@@ -561,11 +561,6 @@ public class OracleExecutionDAO extends OracleBaseDAO implements ExecutionDAO, R
         	ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
     		String json = ow.writeValueAsString(workflow);
 
-    		
-    		//StringReader stringReader = new StringReader(json);
-    		
-    		//System.out.println("Converting reader --> "+stringReader.toString());
-            
             execute(connection, INSERT_WORKFLOW, q -> q.addParameter(workflow.getWorkflowId())
                     .addParameter(workflow.getCorrelationId()).addParameter(json).executeUpdate());
             
@@ -582,11 +577,6 @@ public class OracleExecutionDAO extends OracleBaseDAO implements ExecutionDAO, R
         	ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
     		String json = ow.writeValueAsString(workflow);
 
-    		//System.out.println("Converting json --> "+json);
-    		//StringReader stringReader = new StringReader(json);
-    		
-    		//System.out.println("Converting reader --> "+stringReader.toString());
-            
             execute(connection, UPDATE_WORKFLOW,
                     q -> q.addParameter(json).addParameter(workflow.getWorkflowId()).executeUpdate());
             
@@ -633,11 +623,6 @@ public class OracleExecutionDAO extends OracleBaseDAO implements ExecutionDAO, R
     		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
     		String json = ow.writeValueAsString(task);
 
-    		//System.out.println("Converting json --> "+json);
-    		//StringReader stringReader = new StringReader(json);
-    		
-    		//System.out.println("Converting reader --> "+stringReader.toString());
-            
             String UPDATE_TASK = "UPDATE task SET json_data=?, modified_on=CURRENT_TIMESTAMP WHERE task_id=?";
             int rowsUpdated = query(connection, UPDATE_TASK,
                 q -> q.addParameter(json).addParameter(task.getTaskId()).executeUpdate());
@@ -760,11 +745,6 @@ public class OracleExecutionDAO extends OracleBaseDAO implements ExecutionDAO, R
     		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
     		String json = ow.writeValueAsString(eventExecution);
 
-    		//System.out.println("Converting json --> "+json);
-    		//StringReader stringReader = new StringReader(json);
-    		
-    		//System.out.println("Converting reader --> "+stringReader.toString());
-            
             String INSERT_EVENT_EXECUTION =
                     "INSERT INTO event_execution (event_handler_name, event_name, message_id, execution_id, json_data) "
                         + "VALUES (?, ?, ?, ?, ?)";
@@ -787,11 +767,6 @@ public class OracleExecutionDAO extends OracleBaseDAO implements ExecutionDAO, R
     	try {
     		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
     		String json = ow.writeValueAsString(eventExecution);
-
-    		//System.out.println("Converting json --> "+json);
-    		//StringReader stringReader = new StringReader(json);
-    		
-    		//System.out.println("Converting reader --> "+stringReader.toString());
             
             // @formatter:off
             String UPDATE_EVENT_EXECUTION = "UPDATE event_execution SET " + "json_data = ?, "
@@ -844,12 +819,7 @@ public class OracleExecutionDAO extends OracleBaseDAO implements ExecutionDAO, R
     		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
     		String json = ow.writeValueAsString(pollData);
 
-    		//System.out.println("Converting json --> "+json);
-    		//StringReader stringReader = new StringReader(json);
-    		
-    		//System.out.println("Converting reader --> "+stringReader.toString());
-            
-            String UPDATE_POLL_DATA = "UPDATE poll_data SET json_data=?, modified_on=CURRENT_TIMESTAMP WHERE queue_name=? AND domain=?";
+    		String UPDATE_POLL_DATA = "UPDATE poll_data SET json_data=?, modified_on=CURRENT_TIMESTAMP WHERE queue_name=? AND domain=?";
             int rowsUpdated = query(connection, UPDATE_POLL_DATA,
                 q -> q.addParameter(json).addParameter(pollData.getQueueName()).addParameter(domain)
                     .executeUpdate());

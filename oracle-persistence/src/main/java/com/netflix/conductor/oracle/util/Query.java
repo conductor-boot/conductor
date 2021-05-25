@@ -676,8 +676,7 @@ public class Query implements AutoCloseable {
 
     protected <V> V fromJson(String value, Class<V> returnType) {
         if (null == value) {
-        	System.out.println("NO VALUE RECEIVED - RETURNING NULL");
-            return null;
+        	return null;
         }
 
         try {

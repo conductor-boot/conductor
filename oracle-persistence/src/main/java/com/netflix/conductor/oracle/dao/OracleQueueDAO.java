@@ -83,7 +83,6 @@ public class OracleQueueDAO extends OracleBaseDAO implements QueueDAO {
 
     @Override
     public List<String> pop(String queueName, int count, int timeout) {
-    	//System.out.println("Popping --> "+queueName);
     	List<Message> messages = getWithTransactionWithOutErrorPropagation(
             tx -> popMessages(tx, queueName, count, timeout));
         if (messages == null) {
@@ -210,9 +209,6 @@ public class OracleQueueDAO extends OracleBaseDAO implements QueueDAO {
     private void pushMessage(Connection connection, String queueName, String messageId, String payload,
         Integer priority,
         long offsetTimeInSecond) {
-
-    	//StringReader stringReader = new StringReader(payload);
-    	//System.out.println("Pushing message --> "+payload);
         
         createQueueIfNotExists(connection, queueName);
 
@@ -243,8 +239,6 @@ public class OracleQueueDAO extends OracleBaseDAO implements QueueDAO {
 
     private List<Message> peekMessages(Connection connection, String queueName, int count) {
     	
-    	//System.out.println("Peeking --> "+queueName+" for count "+count);
-    	
     	if (count < 1) {
             return Collections.emptyList();
         }
@@ -270,8 +264,6 @@ public class OracleQueueDAO extends OracleBaseDAO implements QueueDAO {
                     	m.setPayload(rs.getString("payload"));
                     }
                     
-                    //System.out.println("Got Message --> "+m);
-                    
                     results.add(m);
                 }
                 return results;
@@ -279,7 +271,6 @@ public class OracleQueueDAO extends OracleBaseDAO implements QueueDAO {
     }
 
     private List<Message> popMessages(Connection connection, String queueName, int count, int timeout) {
-    	//System.out.println("Popping Message --> "+queueName);
         long start = System.currentTimeMillis();
         List<Message> messages = peekMessages(connection, queueName, count);
 
@@ -287,8 +278,6 @@ public class OracleQueueDAO extends OracleBaseDAO implements QueueDAO {
             Uninterruptibles.sleepUninterruptibly(200, TimeUnit.MILLISECONDS);
             messages = peekMessages(connection, queueName, count);
         }
-        
-        //System.out.println("Peeked Messages results --> "+queueName+ " "+messages.toString());
 
         if (messages.isEmpty()) {
             return messages;
@@ -296,14 +285,12 @@ public class OracleQueueDAO extends OracleBaseDAO implements QueueDAO {
 
         List<Message> poppedMessages = new ArrayList<>();
         for (Message message : messages) {
-        	//System.out.println("Trying to pop --> "+message);
             final String POP_MESSAGE = "UPDATE queue_message SET popped = 'Y' WHERE queue_name = ? AND message_id = ? AND popped = 'N'";
             int result = query(connection, POP_MESSAGE,
                 q -> q.addParameter(queueName).addParameter(message.getId()).executeUpdate());
 
             if (result == 1) {
                 poppedMessages.add(message);
-                //System.out.println("Success pop --> "+message);
             }
         }
         return poppedMessages;

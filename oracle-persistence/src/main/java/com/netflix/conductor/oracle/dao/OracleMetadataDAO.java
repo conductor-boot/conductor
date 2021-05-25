@@ -192,12 +192,6 @@ public class OracleMetadataDAO extends OracleBaseDAO implements MetadataDAO, Eve
     	try {
     		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
     		String json = ow.writeValueAsString(eventHandler);
-
-    		//System.out.println("Converting json --> "+json);
-    		//StringReader stringReader = new StringReader(json);
-    		
-    		//StringReader stringReader = new StringReader(json);//System.out.println("Converting reader --> "+stringReader.toString());
-            
             
             Preconditions.checkNotNull(eventHandler.getName(), "EventHandler name cannot be null");
 
@@ -231,11 +225,6 @@ public class OracleMetadataDAO extends OracleBaseDAO implements MetadataDAO, Eve
     	try {
     		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
     		String json = ow.writeValueAsString(eventHandler);
-
-    		//System.out.println("Converting json --> "+json);
-    		//StringReader stringReader = new StringReader(json);
-    		
-    		//StringReader stringReader = new StringReader(json);//System.out.println("Converting reader --> "+stringReader.toString());
             
             Preconditions.checkNotNull(eventHandler.getName(), "EventHandler name cannot be null");
 
@@ -431,11 +420,6 @@ public class OracleMetadataDAO extends OracleBaseDAO implements MetadataDAO, Eve
     	try {
     		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
     		String json = ow.writeValueAsString(def);
-
-    		//System.out.println("Converting json --> "+json);
-    		//StringReader stringReader = new StringReader(json);
-    		
-    		//StringReader stringReader = new StringReader(json);//System.out.println("Converting reader --> "+stringReader.toString());
             
             final String INSERT_WORKFLOW_DEF_QUERY = "INSERT INTO meta_workflow_def (name, version, json_data) VALUES (?," +
                     " ?, ?)";
