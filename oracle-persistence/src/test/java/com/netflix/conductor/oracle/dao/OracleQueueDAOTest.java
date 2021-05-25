@@ -212,7 +212,7 @@ public class OracleQueueDAOTest {
         // Assert that our un-popped messages match our expected size
         final long expectedSize = totalSize - firstPollSize - secondPollSize;
         try (Connection c = dataSource.getConnection()) {
-            String UNPOPPED = "SELECT COUNT(*) FROM queue_message WHERE queue_name = ? AND popped = false";
+            String UNPOPPED = "SELECT COUNT(*) FROM queue_message WHERE queue_name = ? AND popped = 'N'";
             try (Query q = new Query(objectMapper, c, UNPOPPED)) {
                 long count = q.addParameter(queueName).executeCount();
                 assertEquals("Remaining queue size mismatch", expectedSize, count);
@@ -294,7 +294,7 @@ public class OracleQueueDAOTest {
         // Assert that our un-popped messages match our expected size
         final long expectedSize = totalSize - firstPollSize - secondPollSize;
         try (Connection c = dataSource.getConnection()) {
-            String UNPOPPED = "SELECT COUNT(*) FROM queue_message WHERE queue_name = ? AND popped = false";
+            String UNPOPPED = "SELECT COUNT(*) FROM queue_message WHERE queue_name = ? AND popped = 'N'";
             try (Query q = new Query(objectMapper, c, UNPOPPED)) {
                 long count = q.addParameter(queueName).executeCount();
                 assertEquals("Remaining queue size mismatch", expectedSize, count);
