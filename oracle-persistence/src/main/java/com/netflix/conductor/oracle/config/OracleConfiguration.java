@@ -12,17 +12,27 @@
  */
 package com.netflix.conductor.oracle.config;
 
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
 
+import org.flywaydb.core.Flyway;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.flyway.FlywayConfigurationCustomizer;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.context.event.ApplicationStartingEvent;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.event.EventListener;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.MapPropertySource;
+import org.springframework.core.env.MutablePropertySources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.conductor.dao.ExecutionDAO;
@@ -40,18 +50,16 @@ import com.netflix.conductor.oracle.dao.OracleQueueDAO;
 @Import(DataSourceAutoConfiguration.class)
 public class OracleConfiguration {
 	
-	@EventListener(ApplicationStartingEvent.class)
-	public void setFlywaySqlsPath()
-	{
-		//Paths.get("db", "migration_oracle").toString();
-		System.setProperty("spring.flyway.locations", "classpath:db/migration_oracle");
-	}
-
+	@Bean
+    public FlywayConfigurationCustomizer flywayConfigurationCustomizer() {
+        // override the default location.
+        return configuration -> configuration.locations("classpath:db/migration_oracle");
+    }
 	
 	@Bean
     @DependsOn({"flyway"})
     public MetadataDAO oracleMetadataDAO(ObjectMapper objectMapper, DataSource dataSource, OracleProperties properties) {
-        return new OracleMetadataDAO(objectMapper, dataSource, properties);
+		return new OracleMetadataDAO(objectMapper, dataSource, properties);
     }
 
     @Bean

@@ -1,8 +1,22 @@
+/*
+ * Copyright 2020 Netflix, Inc.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
 package com.netflix.conductor.oracle.config;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.time.Duration;
 
@@ -22,6 +36,8 @@ import com.zaxxer.hikari.HikariDataSource;
 public class OracleTestConfiguration {
 	
 	private final OracleProperties properties = mock(OracleProperties.class);
+	
+	public Flyway flyway;
 	
 	@Bean("oracleContainer")
 	public OracleContainer oracleContainer() {
@@ -70,11 +86,37 @@ public class OracleTestConfiguration {
 	}
 	
 	private void flywayMigrate(DataSource dataSource) {
-        
-        Flyway flyway = new Flyway();
-        flyway.setLocations(Paths.get("db", "migration_oracle").toString());
-        flyway.setDataSource(dataSource);
-        flyway.setPlaceholderReplacement(false);
+		
+		try {
+			Flyway.class
+				.getMethod("setDataSource", DataSource.class)
+				.invoke(
+						(Flyway)Flyway.class
+						.getMethod("setLocations", String.class)
+						.invoke(
+								((Flyway)Flyway.class
+										.getMethod("Flyway")
+										.invoke(flyway)), 
+								Paths.get("db", "migration_oracle").toString()
+								)
+						);
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
         flyway.migrate();
     }
 	
