@@ -15,7 +15,6 @@ package com.netflix.conductor.oracle.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.nio.file.Paths;
 import java.util.List;
 
 import org.flywaydb.core.Flyway;

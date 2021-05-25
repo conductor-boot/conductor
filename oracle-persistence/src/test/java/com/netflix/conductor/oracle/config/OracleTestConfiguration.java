@@ -24,7 +24,8 @@ public class OracleTestConfiguration {
 	
 	private final OracleProperties properties = mock(OracleProperties.class);
 	
-	@Bean("oracleContainer")
+	@Bean
+	//("oracleContainer")
 	public OracleContainer oracleContainer() {
 		
 		System.setProperty("oracle.jdbc.timezoneAsRegion","false");
