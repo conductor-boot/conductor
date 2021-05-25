@@ -74,11 +74,11 @@ public class OracleQueueDAOTest {
 
     @Test
     public void complexQueueTest() {
-        String queueName = "TestQueue";
+        String queueName = "TestQueue__1";
         long offsetTimeInSecond = 0;
 
         for (int i = 0; i < 10; i++) {
-            String messageId = "msg" + i;
+            String messageId = "msg__" + i;
             queueDAO.push(queueName, messageId, offsetTimeInSecond);
         }
         int size = queueDAO.getSize(queueName);
@@ -88,7 +88,7 @@ public class OracleQueueDAOTest {
         assertEquals(10L, details.get(queueName).longValue());
 
         for (int i = 0; i < 10; i++) {
-            String messageId = "msg" + i;
+            String messageId = "msg__" + i;
             queueDAO.pushIfNotExists(queueName, messageId, offsetTimeInSecond);
         }
 
@@ -97,7 +97,7 @@ public class OracleQueueDAOTest {
         assertEquals(10, popped.size());
 
         Map<String, Map<String, Map<String, Long>>> verbose = queueDAO.queuesDetailVerbose();
-        assertEquals(4, verbose.size());
+        assertEquals(1, verbose.size());
         long shardSize = verbose.get(queueName).get("a").get("size");
         long unackedSize = verbose.get(queueName).get("a").get("uacked");
         assertEquals(0, shardSize);
@@ -117,14 +117,14 @@ public class OracleQueueDAOTest {
         assertEquals(0, popped.size());
 
         for (int i = 0; i < 10; i++) {
-            String messageId = "msg" + i;
+            String messageId = "msg__" + i;
             queueDAO.pushIfNotExists(queueName, messageId, offsetTimeInSecond);
         }
         size = queueDAO.getSize(queueName);
         assertEquals(10, size);
 
         for (int i = 0; i < 10; i++) {
-            String messageId = "msg" + i;
+            String messageId = "msg__" + i;
             assertTrue(queueDAO.containsMessage(queueName, messageId));
             queueDAO.remove(queueName, messageId);
         }
@@ -133,7 +133,7 @@ public class OracleQueueDAOTest {
         assertEquals(0, size);
 
         for (int i = 0; i < 10; i++) {
-            String messageId = "msg" + i;
+            String messageId = "msg__" + i;
             queueDAO.pushIfNotExists(queueName, messageId, offsetTimeInSecond);
         }
         queueDAO.flush(queueName);
