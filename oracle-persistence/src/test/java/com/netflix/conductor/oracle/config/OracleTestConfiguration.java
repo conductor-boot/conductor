@@ -16,7 +16,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.file.Paths;
 import java.time.Duration;
 
@@ -37,7 +36,8 @@ public class OracleTestConfiguration {
 	
 	private final OracleProperties properties = mock(OracleProperties.class);
 	
-	public Flyway flyway;
+	@Autowired
+	Flyway flyway;
 	
 	@Bean("oracleContainer")
 	public OracleContainer oracleContainer() {
@@ -88,18 +88,9 @@ public class OracleTestConfiguration {
 	private void flywayMigrate(DataSource dataSource) {
 		
 		try {
-			Flyway.class
-				.getMethod("setDataSource", DataSource.class)
-				.invoke(
-						(Flyway)Flyway.class
-						.getMethod("setLocations", String.class)
-						.invoke(
-								((Flyway)Flyway.class
-										.getMethod("Flyway")
-										.invoke(flyway)), 
-								Paths.get("db", "migration_oracle").toString()
-								)
-						);
+			flyway.getClass().getMethod("setLocations", String.class).invoke(flyway, Paths.get("db", "migration_oracle").toString());
+			flyway.getClass().getMethod("setDataSource", DataSource.class).invoke(flyway, dataSource);
+			flyway.getClass().getMethod("migrate").invoke(flyway);
 		} catch (IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -116,8 +107,6 @@ public class OracleTestConfiguration {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-        flyway.migrate();
     }
 	
 	@Bean

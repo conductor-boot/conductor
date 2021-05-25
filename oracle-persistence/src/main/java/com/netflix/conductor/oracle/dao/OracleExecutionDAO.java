@@ -15,7 +15,6 @@ package com.netflix.conductor.oracle.dao;
 import static com.netflix.conductor.core.exception.ApplicationException.Code.BACKEND_ERROR;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;

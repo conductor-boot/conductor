@@ -12,8 +12,6 @@
  */
 package com.netflix.conductor.oracle.dao;
 
-import java.io.IOException;
-import java.io.StringReader;
 import java.sql.Clob;
 import java.sql.Connection;
 import java.util.ArrayList;
