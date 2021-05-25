@@ -881,7 +881,7 @@ public class OracleExecutionDAO extends OracleBaseDAO implements ExecutionDAO, R
     }
 
     private List<String> findAllTasksInProgressInOrderOfArrival(Task task, int limit) {
-        String GET_IN_PROGRESS_TASKS_WITH_LIMIT = "SELECT task_id FROM task_in_progress WHERE task_def_name = ? AND ROWNUM < ? ORDER BY created_on";
+        String GET_IN_PROGRESS_TASKS_WITH_LIMIT = "SELECT task_id FROM task_in_progress WHERE task_def_name = ? AND ROWNUM <= ? ORDER BY created_on";
 
         return queryWithTransaction(GET_IN_PROGRESS_TASKS_WITH_LIMIT,
             q -> q.addParameter(task.getTaskDefName()).addParameter(limit).executeScalarList(String.class));
