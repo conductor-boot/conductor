@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.flywaydb.core.Flyway;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,7 +36,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.containers.OracleContainer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
@@ -65,33 +63,12 @@ public class OracleQueueDAOTest {
     public ExpectedException expected = ExpectedException.none();
 
     @Autowired
-    public OracleContainer oracleContainer;
-    
     public HikariDataSource dataSource;
 
     @SuppressWarnings("resource")
 	@Before
     public void setup() {
-    	dataSource = new HikariDataSource();
-		
-        dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+ oracleContainer.getHost() + ":" + oracleContainer.getOraclePort()  + "/" + oracleContainer.getSid());
-        
-        dataSource.setUsername("junit_user");
-        dataSource.setPassword("junit_user");
-        dataSource.setMaximumPoolSize(8);
-        dataSource.setAutoCommit(false);
-        
-        flywayMigrate();
-        
-        queueDAO = new OracleQueueDAO(objectMapper, dataSource);
-    }
-    
-    private void flywayMigrate() {
-
-		Flyway flyway = new Flyway();
-		//flyway.setLocations(Paths.get("db", "migration_oracle").toString());
-		flyway.setDataSource(dataSource);
-		flyway.migrate();
+    	queueDAO = new OracleQueueDAO(objectMapper, dataSource);
     }
 
     @Test

@@ -50,24 +50,11 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
     public TestName name = new TestName();
 
     @Autowired
-    public OracleContainer oracleContainer;
-    
     public HikariDataSource dataSource;
 
     @SuppressWarnings("resource")
 	@Before
     public void setup() {
-    	
-    	dataSource = new HikariDataSource();
-		
-        dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+ oracleContainer.getHost() + ":" + oracleContainer.getOraclePort()  + "/" + oracleContainer.getSid());
-        
-        dataSource.setUsername("junit_user");
-        dataSource.setPassword("junit_user");
-        dataSource.setMaximumPoolSize(8);
-        dataSource.setAutoCommit(false);
-        
-        flywayMigrate();
     	
     	executionDAO = new OracleExecutionDAO(objectMapper, dataSource);
     }

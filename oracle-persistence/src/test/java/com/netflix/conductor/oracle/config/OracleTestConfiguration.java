@@ -13,19 +13,28 @@
 package com.netflix.conductor.oracle.config;
 
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+import java.time.Duration;
+
+import javax.sql.DataSource;
+
+import org.flywaydb.core.Flyway;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.DependsOn;
 import org.testcontainers.containers.OracleContainer;
 import org.testcontainers.utility.DockerImageName;
+
+import com.zaxxer.hikari.HikariDataSource;
 
 @TestConfiguration
 public class OracleTestConfiguration {
 	
 	private final OracleProperties properties = mock(OracleProperties.class);
 	
-	@Bean
-	//("oracleContainer")
+	@Bean("oracleContainer")
 	public OracleContainer oracleContainer() {
 		
 		System.setProperty("oracle.jdbc.timezoneAsRegion","false");
@@ -51,7 +60,7 @@ public class OracleTestConfiguration {
 		oracleContainer.start();
 	}
 	
-	/*@Bean
+	@Bean
 	@DependsOn("oracleContainer")
 	public DataSource dataSource(@Autowired OracleContainer oracleContainer) {
 		HikariDataSource dataSource = new HikariDataSource();
@@ -73,31 +82,11 @@ public class OracleTestConfiguration {
 	
 	private void flywayMigrate(DataSource dataSource) {
 		
-		try {
-			Flyway flyway = Flyway.class.getConstructor().newInstance();
-			flyway.getClass().getMethod("setLocations", String.class).invoke(flyway, Paths.get("db", "migration_oracle").toString());
-			flyway.getClass().getMethod("setDataSource", DataSource.class).invoke(flyway, dataSource);
-			flyway.getClass().getMethod("migrate").invoke(flyway);
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }*/
+		Flyway flyway = new Flyway();
+		flyway.setDataSource(dataSource);
+		flyway.migrate();
+	
+    }
 	
 	@Bean
 	public OracleProperties oracleProperties() {

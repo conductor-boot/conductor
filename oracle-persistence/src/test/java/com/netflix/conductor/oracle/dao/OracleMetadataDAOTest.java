@@ -29,7 +29,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.flywaydb.core.Flyway;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -39,7 +38,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.testcontainers.containers.OracleContainer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.conductor.common.config.TestObjectMapperConfiguration;
@@ -70,34 +68,13 @@ public class OracleMetadataDAOTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Autowired
-    public OracleContainer oracleContainer;
-    
     public HikariDataSource dataSource;
 
     @SuppressWarnings("resource")
 	@Before
     public void setup() {
-    	dataSource = new HikariDataSource();
-		
-        dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+ oracleContainer.getHost() + ":" + oracleContainer.getOraclePort()  + "/" + oracleContainer.getSid());
-        
-        dataSource.setUsername("junit_user");
-        dataSource.setPassword("junit_user");
-        dataSource.setMaximumPoolSize(8);
-        dataSource.setAutoCommit(false);
-        
-        flywayMigrate();
-        
     	metadataDAO = new OracleMetadataDAO(objectMapper, dataSource,
     			oracleProperties);
-    }
-    
-    private void flywayMigrate() {
-
-		Flyway flyway = new Flyway();
-		//flyway.setLocations(Paths.get("db", "migration_oracle").toString());
-		flyway.setDataSource(dataSource);
-		flyway.migrate();
     }
 
     @Test
