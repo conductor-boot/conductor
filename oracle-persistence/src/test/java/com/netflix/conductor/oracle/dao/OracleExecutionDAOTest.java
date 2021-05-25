@@ -13,8 +13,11 @@
 package com.netflix.conductor.oracle.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.flywaydb.core.Flyway;
@@ -30,7 +33,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.conductor.common.config.TestObjectMapperConfiguration;
+import com.netflix.conductor.common.metadata.tasks.Task;
+import com.netflix.conductor.common.metadata.tasks.TaskDef;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
+import com.netflix.conductor.common.metadata.workflow.WorkflowTask;
 import com.netflix.conductor.common.run.Workflow;
 import com.netflix.conductor.dao.ExecutionDAO;
 import com.netflix.conductor.dao.ExecutionDAOTest;
@@ -50,7 +56,6 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
     public TestName name = new TestName();
 
     @Autowired
-    @Qualifier("executionDataSource")
     public HikariDataSource dataSource;
 
     @SuppressWarnings("resource")
@@ -58,6 +63,42 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
     public void setup() {
     	
     	executionDAO = new OracleExecutionDAO(objectMapper, dataSource);
+    }
+    
+    @Test
+    @Override
+    public void testTaskExceedsLimit() {
+        TaskDef taskDefinition = new TaskDef();
+        taskDefinition.setName("task__1");
+        taskDefinition.setConcurrentExecLimit(1);
+
+        WorkflowTask workflowTask = new WorkflowTask();
+        workflowTask.setName("task__1");
+        workflowTask.setTaskDefinition(taskDefinition);
+        workflowTask.setTaskDefinition(taskDefinition);
+
+        List<Task> tasks = new LinkedList<>();
+        for (int i = 0; i < 15; i++) {
+            Task task = new Task();
+            task.setScheduledTime(1L);
+            task.setSeq(i + 1);
+            task.setTaskId("t_" + i);
+            task.setWorkflowInstanceId("workflow_" + i);
+            task.setReferenceTaskName("task__1");
+            task.setTaskDefName("task__1");
+            tasks.add(task);
+            task.setStatus(Task.Status.SCHEDULED);
+            task.setWorkflowTask(workflowTask);
+        }
+
+        getExecutionDAO().createTasks(tasks);
+        assertFalse(getExecutionDAO().exceedsInProgressLimit(tasks.get(0)));
+        tasks.get(0).setStatus(Task.Status.IN_PROGRESS);
+        getExecutionDAO().updateTask(tasks.get(0));
+
+        for (Task task : tasks) {
+            assertTrue(getExecutionDAO().exceedsInProgressLimit(task));
+        }
     }
 
     @Test

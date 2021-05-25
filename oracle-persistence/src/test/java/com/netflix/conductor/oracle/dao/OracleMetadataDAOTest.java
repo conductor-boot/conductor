@@ -69,7 +69,6 @@ public class OracleMetadataDAOTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Autowired
-    @Qualifier("metadataDataSource")
     public HikariDataSource dataSource;
 
     @SuppressWarnings("resource")
