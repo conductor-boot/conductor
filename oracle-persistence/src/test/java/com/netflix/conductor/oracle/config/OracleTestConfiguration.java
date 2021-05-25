@@ -36,9 +36,6 @@ public class OracleTestConfiguration {
 	
 	private final OracleProperties properties = mock(OracleProperties.class);
 	
-	@Autowired
-	Flyway flyway;
-	
 	@Bean("oracleContainer")
 	public OracleContainer oracleContainer() {
 		
@@ -88,6 +85,7 @@ public class OracleTestConfiguration {
 	private void flywayMigrate(DataSource dataSource) {
 		
 		try {
+			Flyway flyway = Flyway.class.getConstructor().newInstance();
 			flyway.getClass().getMethod("setLocations", String.class).invoke(flyway, Paths.get("db", "migration_oracle").toString());
 			flyway.getClass().getMethod("setDataSource", DataSource.class).invoke(flyway, dataSource);
 			flyway.getClass().getMethod("migrate").invoke(flyway);
@@ -104,6 +102,9 @@ public class OracleTestConfiguration {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
