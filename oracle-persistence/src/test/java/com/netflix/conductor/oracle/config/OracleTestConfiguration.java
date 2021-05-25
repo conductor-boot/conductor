@@ -64,7 +64,6 @@ public class OracleTestConfiguration {
 	
 	@Bean
 	@DependsOn("oracleContainer")
-	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public DataSource dataSource(@Autowired OracleContainer oracleContainer) {
 		HikariDataSource dataSource = new HikariDataSource();
 		

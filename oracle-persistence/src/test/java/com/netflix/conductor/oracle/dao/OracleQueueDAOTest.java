@@ -83,7 +83,7 @@ public class OracleQueueDAOTest {
         int size = queueDAO.getSize(queueName);
         assertEquals(10, size);
         Map<String, Long> details = queueDAO.queuesDetail();
-        assertEquals(1, details.size());
+        assertEquals(4, details.size());
         assertEquals(10L, details.get(queueName).longValue());
 
         for (int i = 0; i < 10; i++) {
