@@ -13,23 +13,11 @@
 package com.netflix.conductor.oracle.config;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Paths;
-import java.time.Duration;
-
-import javax.sql.DataSource;
-
-import org.flywaydb.core.Flyway;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.DependsOn;
 import org.testcontainers.containers.OracleContainer;
 import org.testcontainers.utility.DockerImageName;
-
-import com.zaxxer.hikari.HikariDataSource;
 
 @TestConfiguration
 public class OracleTestConfiguration {
@@ -62,7 +50,7 @@ public class OracleTestConfiguration {
 		oracleContainer.start();
 	}
 	
-	@Bean
+	/*@Bean
 	@DependsOn("oracleContainer")
 	public DataSource dataSource(@Autowired OracleContainer oracleContainer) {
 		HikariDataSource dataSource = new HikariDataSource();
@@ -72,7 +60,7 @@ public class OracleTestConfiguration {
         dataSource.setUsername("junit_user");
         dataSource.setPassword("junit_user");
         
-        //dataSource.setAutoCommit(false);
+        dataSource.setAutoCommit(false);
 
     	when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.ofSeconds(60));
 
@@ -108,7 +96,7 @@ public class OracleTestConfiguration {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    }
+    }*/
 	
 	@Bean
 	public OracleProperties oracleProperties() {

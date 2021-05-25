@@ -18,6 +18,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +27,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.sql.DataSource;
+
+import org.flywaydb.core.Flyway;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -36,6 +41,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.testcontainers.containers.OracleContainer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
@@ -63,13 +69,53 @@ public class OracleQueueDAOTest {
     public ExpectedException expected = ExpectedException.none();
 
     @Autowired
+    public OracleContainer oracleContainer;
+    
     public HikariDataSource dataSource;
 
     @SuppressWarnings("resource")
 	@Before
     public void setup() {
-    	
+    	dataSource = new HikariDataSource();
+		
+        dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+ oracleContainer.getHost() + ":" + oracleContainer.getOraclePort()  + "/" + oracleContainer.getSid());
+        
+        dataSource.setUsername("junit_user");
+        dataSource.setPassword("junit_user");
+        dataSource.setMaximumPoolSize(8);
+        dataSource.setAutoCommit(false);
+        
+        flywayMigrate();
+        
         queueDAO = new OracleQueueDAO(objectMapper, dataSource);
+    }
+    
+    private void flywayMigrate() {
+		
+		try {
+			Flyway flyway = Flyway.class.getConstructor().newInstance();
+			flyway.getClass().getMethod("setLocations", String.class).invoke(flyway, Paths.get("db", "migration_oracle").toString());
+			flyway.getClass().getMethod("setDataSource", DataSource.class).invoke(flyway, dataSource);
+			flyway.getClass().getMethod("migrate").invoke(flyway);
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     @Test
