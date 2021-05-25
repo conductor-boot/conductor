@@ -34,6 +34,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -83,7 +84,7 @@ public class OracleQueueDAOTest {
         int size = queueDAO.getSize(queueName);
         assertEquals(10, size);
         Map<String, Long> details = queueDAO.queuesDetail();
-        assertEquals(4, details.size());
+        assertEquals(1, details.size());
         assertEquals(10L, details.get(queueName).longValue());
 
         for (int i = 0; i < 10; i++) {
@@ -96,7 +97,7 @@ public class OracleQueueDAOTest {
         assertEquals(10, popped.size());
 
         Map<String, Map<String, Map<String, Long>>> verbose = queueDAO.queuesDetailVerbose();
-        assertEquals(1, verbose.size());
+        assertEquals(4, verbose.size());
         long shardSize = verbose.get(queueName).get("a").get("size");
         long unackedSize = verbose.get(queueName).get("a").get("uacked");
         assertEquals(0, shardSize);
