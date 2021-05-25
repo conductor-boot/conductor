@@ -59,7 +59,7 @@ public class OracleTestConfiguration {
         dataSource.setUsername("junit_user");
         dataSource.setPassword("junit_user");
         
-        dataSource.setAutoCommit(false);
+        //dataSource.setAutoCommit(false);
 
     	when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.ofSeconds(60));
 
