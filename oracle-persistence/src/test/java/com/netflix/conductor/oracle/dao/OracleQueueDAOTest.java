@@ -96,7 +96,7 @@ public class OracleQueueDAOTest {
         assertEquals(10, popped.size());
 
         Map<String, Map<String, Map<String, Long>>> verbose = queueDAO.queuesDetailVerbose();
-        assertEquals(1, verbose.size());
+        assertEquals(4, verbose.size());
         long shardSize = verbose.get(queueName).get("a").get("size");
         long unackedSize = verbose.get(queueName).get("a").get("uacked");
         assertEquals(0, shardSize);
