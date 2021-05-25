@@ -62,9 +62,69 @@ public class OracleTestConfiguration {
 		oracleContainer.start();
 	}
 	
-	@Bean
+	/*@Bean
 	@DependsOn("oracleContainer")
 	public DataSource dataSource(@Autowired OracleContainer oracleContainer) {
+		HikariDataSource dataSource = new HikariDataSource();
+		
+        dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+ oracleContainer.getHost() + ":" + oracleContainer.getOraclePort()  + "/" + oracleContainer.getSid());
+        
+        dataSource.setUsername("junit_user");
+        dataSource.setPassword("junit_user");
+        
+        dataSource.setAutoCommit(false);
+
+    	when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.ofSeconds(60));
+
+    	dataSource.setMaximumPoolSize(100);
+        flywayMigrate(dataSource);
+        
+        return dataSource;
+	}*/
+	
+	@Bean("executionDataSource")
+	@DependsOn("oracleContainer")
+	public DataSource executionDataSource(@Autowired OracleContainer oracleContainer) {
+		HikariDataSource dataSource = new HikariDataSource();
+		
+        dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+ oracleContainer.getHost() + ":" + oracleContainer.getOraclePort()  + "/" + oracleContainer.getSid());
+        
+        dataSource.setUsername("junit_user");
+        dataSource.setPassword("junit_user");
+        
+        dataSource.setAutoCommit(false);
+
+    	when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.ofSeconds(60));
+
+    	dataSource.setMaximumPoolSize(100);
+        flywayMigrate(dataSource);
+        
+        return dataSource;
+	}
+	
+	@Bean("metadataDataSource")
+	@DependsOn("oracleContainer")
+	public DataSource metadataDataSource(@Autowired OracleContainer oracleContainer) {
+		HikariDataSource dataSource = new HikariDataSource();
+		
+        dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+ oracleContainer.getHost() + ":" + oracleContainer.getOraclePort()  + "/" + oracleContainer.getSid());
+        
+        dataSource.setUsername("junit_user");
+        dataSource.setPassword("junit_user");
+        
+        dataSource.setAutoCommit(false);
+
+    	when(properties.getTaskDefCacheRefreshInterval()).thenReturn(Duration.ofSeconds(60));
+
+    	dataSource.setMaximumPoolSize(100);
+        flywayMigrate(dataSource);
+        
+        return dataSource;
+	}
+	
+	@Bean("queueDataSource")
+	@DependsOn("oracleContainer")
+	public DataSource queueDataSource(@Autowired OracleContainer oracleContainer) {
 		HikariDataSource dataSource = new HikariDataSource();
 		
         dataSource.setJdbcUrl("jdbc:oracle:thin:@//"+ oracleContainer.getHost() + ":" + oracleContainer.getOraclePort()  + "/" + oracleContainer.getSid());

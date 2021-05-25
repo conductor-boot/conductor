@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -49,6 +50,7 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
     public TestName name = new TestName();
 
     @Autowired
+    @Qualifier("executionDataSource")
     public HikariDataSource dataSource;
 
     @SuppressWarnings("resource")
@@ -56,14 +58,6 @@ public class OracleExecutionDAOTest extends ExecutionDAOTest {
     public void setup() {
     	
     	executionDAO = new OracleExecutionDAO(objectMapper, dataSource);
-    }
-    
-    private void flywayMigrate() {
-
-		Flyway flyway = new Flyway();
-		//flyway.setLocations(Paths.get("db", "migration_oracle").toString());
-		flyway.setDataSource(dataSource);
-		flyway.migrate();
     }
 
     @Test

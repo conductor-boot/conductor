@@ -36,6 +36,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -68,6 +69,7 @@ public class OracleMetadataDAOTest {
     public ExpectedException thrown = ExpectedException.none();
 
     @Autowired
+    @Qualifier("metadataDataSource")
     public HikariDataSource dataSource;
 
     @SuppressWarnings("resource")
