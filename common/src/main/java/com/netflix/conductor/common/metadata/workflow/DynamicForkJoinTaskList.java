@@ -12,8 +12,8 @@
  */
 package com.netflix.conductor.common.metadata.workflow;
 
-import com.github.vmg.protogen.annotations.ProtoField;
-import com.github.vmg.protogen.annotations.ProtoMessage;
+import com.netflix.conductor.annotations.protogen.ProtoField;
+import com.netflix.conductor.annotations.protogen.ProtoMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.Map;
 public class DynamicForkJoinTaskList {
 
     @ProtoField(id = 1)
-    private List<DynamicForkJoinTask> dynamicTasks = new ArrayList<DynamicForkJoinTask>();
+    private List<DynamicForkJoinTask> dynamicTasks = new ArrayList<>();
 
     public void add(String taskName, String workflowName, String referenceName, Map<String, Object> input){
         dynamicTasks.add(new DynamicForkJoinTask(taskName, workflowName, referenceName, input));

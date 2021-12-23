@@ -7,7 +7,8 @@ buildscript {
     }
     dependencies {
         classpath 'com.netflix.nebula:gradle-extra-configurations-plugin:5.0.3'
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.3.1.RELEASE'
+        // revElasticSearch7 in dependencies.gradle needs to be updated when spring is upgraded
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.3.12.RELEASE'
     }
 }
 
@@ -89,11 +90,36 @@ allprojects {
 
     dependencyManagement {
         imports {
-            mavenBom("org.springframework.boot:spring-boot-dependencies:2.3.1.RELEASE")
+            mavenBom("org.springframework.boot:spring-boot-dependencies:2.3.12.RELEASE")
         }
     }
 
     dependencies {
+        implementation('org.apache.logging.log4j:log4j-core') {
+            version {
+                strictly '2.17.0'
+            }
+        }
+        implementation('org.apache.logging.log4j:log4j-api') {
+            version {
+                strictly '2.17.0'
+            }
+        }
+        implementation('org.apache.logging.log4j:log4j-slf4j-impl') {
+            version {
+                strictly '2.17.0'
+            }
+        }
+        implementation('org.apache.logging.log4j:log4j-jul') {
+            version {
+                strictly '2.17.0'
+            }
+        }
+        implementation('org.apache.logging.log4j:log4j-web') {
+            version {
+                strictly '2.17.0'
+            }
+        }
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
         testImplementation('org.springframework.boot:spring-boot-starter-test')
@@ -117,7 +143,7 @@ allprojects {
 }
 
 // all client and their related modules are published with Java 8 compatibility
-["common", "client", "client-spring", "grpc", "grpc-client"].each {
+["annotations", "common", "client", "client-spring", "grpc", "grpc-client"].each {
     project(":conductor-$it") {
         compileJava {
             options.release = 8
@@ -144,3 +170,4 @@ sonarqube {
         property "sonar.host.url", "https://sonarcloud.io"
     }
 }
+

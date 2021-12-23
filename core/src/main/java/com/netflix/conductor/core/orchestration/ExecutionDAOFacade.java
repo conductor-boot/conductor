@@ -25,6 +25,7 @@ import com.netflix.conductor.core.config.ConductorProperties;
 import com.netflix.conductor.core.events.queue.Message;
 import com.netflix.conductor.core.exception.ApplicationException;
 import com.netflix.conductor.core.exception.ApplicationException.Code;
+import com.netflix.conductor.dao.ConcurrentExecutionLimitDAO;
 import com.netflix.conductor.dao.ExecutionDAO;
 import com.netflix.conductor.dao.IndexDAO;
 import com.netflix.conductor.dao.PollDataDAO;
@@ -63,6 +64,7 @@ public class ExecutionDAOFacade {
     private final QueueDAO queueDAO;
     private final IndexDAO indexDAO;
     private final RateLimitingDAO rateLimitingDao;
+    private final ConcurrentExecutionLimitDAO concurrentExecutionLimitDAO;
     private final PollDataDAO pollDataDAO;
     private final ObjectMapper objectMapper;
     private final ConductorProperties properties;
@@ -70,12 +72,13 @@ public class ExecutionDAOFacade {
     private final ScheduledThreadPoolExecutor scheduledThreadPoolExecutor;
 
     public ExecutionDAOFacade(ExecutionDAO executionDAO, QueueDAO queueDAO, IndexDAO indexDAO,
-        RateLimitingDAO rateLimitingDao, PollDataDAO pollDataDAO, ObjectMapper objectMapper,
-        ConductorProperties properties) {
+                              RateLimitingDAO rateLimitingDao, ConcurrentExecutionLimitDAO concurrentExecutionLimitDAO, PollDataDAO pollDataDAO, ObjectMapper objectMapper,
+                              ConductorProperties properties) {
         this.executionDAO = executionDAO;
         this.queueDAO = queueDAO;
         this.indexDAO = indexDAO;
         this.rateLimitingDao = rateLimitingDao;
+        this.concurrentExecutionLimitDAO = concurrentExecutionLimitDAO;
         this.pollDataDAO = pollDataDAO;
         this.objectMapper = objectMapper;
         this.properties = properties;
@@ -274,6 +277,11 @@ public class ExecutionDAOFacade {
             throw new ApplicationException(ApplicationException.Code.BACKEND_ERROR,
                 "Error removing workflow: " + workflowId, e);
         }
+        try {
+            queueDAO.remove(DECIDER_QUEUE, workflowId);
+        } catch (Exception e) {
+            LOGGER.info("Error removing workflow: {} from decider queue", workflowId, e);
+        }
     }
 
     private void removeWorkflowIndex(Workflow workflow, boolean archiveWorkflow) throws JsonProcessingException {
@@ -470,7 +478,7 @@ public class ExecutionDAOFacade {
     }
 
     public boolean exceedsInProgressLimit(Task task) {
-        return executionDAO.exceedsInProgressLimit(task);
+        return concurrentExecutionLimitDAO.exceedsLimit(task);
     }
 
     public boolean exceedsRateLimitPerFrequency(Task task, TaskDef taskDef) {

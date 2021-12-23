@@ -15,8 +15,6 @@ package com.netflix.conductor.metrics;
 import com.netflix.conductor.common.metadata.tasks.Task;
 import com.netflix.conductor.common.metadata.tasks.Task.Status;
 import com.netflix.conductor.common.run.Workflow.WorkflowStatus;
-import com.netflix.servo.monitor.BasicStopwatch;
-import com.netflix.servo.monitor.Stopwatch;
 import com.netflix.spectator.api.Counter;
 import com.netflix.spectator.api.DistributionSummary;
 import com.netflix.spectator.api.Gauge;
@@ -25,11 +23,11 @@ import com.netflix.spectator.api.Registry;
 import com.netflix.spectator.api.Spectator;
 import com.netflix.spectator.api.Timer;
 import com.netflix.spectator.api.histogram.PercentileTimer;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.lang3.StringUtils;
 
 public class Monitors {
 
@@ -47,18 +45,6 @@ public class Monitors {
     public static final String classQualifier = "WorkflowMonitor";
 
     private Monitors() {
-    }
-
-    /**
-     * @param className  Name of the class
-     * @param methodName Method name
-     */
-    public static void error(String className, String methodName) {
-        getCounter(className, "workflow_server_error", "methodName", methodName).increment();
-    }
-
-    public static Stopwatch start(String className, String name, String... additionalTags) {
-        return start(getTimer(className, name, additionalTags));
     }
 
     /**
@@ -148,18 +134,13 @@ public class Monitors {
         return tags;
     }
 
-    private static Stopwatch start(Timer sm) {
 
-        Stopwatch sw = new BasicStopwatch() {
-            @Override
-            public void stop() {
-                super.stop();
-                long duration = getDuration(TimeUnit.MILLISECONDS);
-                sm.record(duration, TimeUnit.MILLISECONDS);
-            }
-        };
-        sw.start();
-        return sw;
+    /**
+     * @param className  Name of the class
+     * @param methodName Method name
+     */
+    public static void error(String className, String methodName) {
+        getCounter(className, "workflow_server_error", "methodName", methodName).increment();
     }
 
     public static void recordGauge(String name, long count, String... tags) {
@@ -189,16 +170,15 @@ public class Monitors {
     }
 
     public static void recordQueueDepth(String taskType, long size, String ownerApp) {
-        gauge(classQualifier, "task_queue_depth", size, "taskType", taskType, "ownerApp", "" + ownerApp);
+        gauge(classQualifier, "task_queue_depth", size, "taskType", taskType, "ownerApp", StringUtils.defaultIfBlank(ownerApp, "unknown"));
     }
 
     public static void recordTaskInProgress(String taskType, long size, String ownerApp) {
-        gauge(classQualifier, "task_in_progress", size, "taskType", taskType, "ownerApp", "" + ownerApp);
+        gauge(classQualifier, "task_in_progress", size, "taskType", taskType, "ownerApp", StringUtils.defaultIfBlank(ownerApp, "unknown"));
     }
 
     public static void recordRunningWorkflows(long count, String name, String version, String ownerApp) {
-        gauge(classQualifier, "workflow_running", count, "workflowName", name, "version", version, "ownerApp",
-            "" + ownerApp);
+        gauge(classQualifier, "workflow_running", count, "workflowName", name, "version", version, "ownerApp", StringUtils.defaultIfBlank(ownerApp, "unknown"));
     }
 
     public static void recordNumTasksInWorkflow(long count, String name, String version) {
@@ -218,12 +198,15 @@ public class Monitors {
     }
 
     public static void recordWorkflowTermination(String workflowType, WorkflowStatus status, String ownerApp) {
-        counter(classQualifier, "workflow_failure", "workflowName", workflowType, "status", status.name(), "ownerApp",
-            "" + ownerApp);
+        counter(classQualifier, "workflow_failure", "workflowName", workflowType, "status", status.name(), "ownerApp", StringUtils.defaultIfBlank(ownerApp, "unknown"));
+    }
+
+    public static void recordWorkflowStartSuccess(String workflowType, String version, String ownerApp) {
+        counter(classQualifier, "workflow_start_success", "workflowName", workflowType, "version", version, "ownerApp", StringUtils.defaultIfBlank(ownerApp, "unknown"));
     }
 
     public static void recordWorkflowStartError(String workflowType, String ownerApp) {
-        counter(classQualifier, "workflow_start_error", "workflowName", workflowType, "ownerApp", "" + ownerApp);
+        counter(classQualifier, "workflow_start_error", "workflowName", workflowType, "ownerApp", StringUtils.defaultIfBlank(ownerApp, "unknown"));
     }
 
     public static void recordUpdateConflict(String taskType, String workflowType, WorkflowStatus status) {
@@ -245,7 +228,7 @@ public class Monitors {
     }
 
     public static void recordWorkflowCompletion(String workflowType, long duration, String ownerApp) {
-        getTimer(classQualifier, "workflow_execution", "workflowName", workflowType, "ownerApp", "" + ownerApp)
+        getTimer(classQualifier, "workflow_execution", "workflowName", workflowType, "ownerApp", StringUtils.defaultIfBlank(ownerApp, "unknown"))
             .record(duration, TimeUnit.MILLISECONDS);
     }
 
@@ -293,7 +276,7 @@ public class Monitors {
     }
 
     public static void recordDaoEventRequests(String dao, String action, String event) {
-        counter(classQualifier, "dao_requests", "dao", dao, "action", action, "event", event);
+        counter(classQualifier, "dao_event_requests", "dao", dao, "action", action, "event", event);
     }
 
     public static void recordDaoPayloadSize(String dao, String action, int size) {

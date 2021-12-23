@@ -13,16 +13,12 @@
 package com.netflix.conductor.core.execution.tasks;
 
 import com.netflix.conductor.core.config.ConductorProperties;
-import com.netflix.conductor.core.execution.WorkflowExecutor;
-import com.netflix.conductor.dao.QueueDAO;
-import com.netflix.conductor.service.ExecutionService;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.time.Duration;
 import java.util.Collections;
 
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
@@ -32,52 +28,30 @@ public class TestSystemTaskWorkerCoordinator {
 
     private static final String TEST_QUEUE = "test";
     private static final String EXECUTION_NAMESPACE_CONSTANT = "@exeNS";
-    private static final String ISOLATION_CONSTANT = "-iso";
 
-    private QueueDAO queueDAO;
-    private WorkflowExecutor workflowExecutor;
-    private ExecutionService executionService;
+    private SystemTaskWorker systemTaskWorker;
     private ConductorProperties properties;
 
     @Before
     public void setUp() {
-        queueDAO = mock(QueueDAO.class);
-        workflowExecutor = mock(WorkflowExecutor.class);
-        executionService = mock(ExecutionService.class);
+        systemTaskWorker = mock(SystemTaskWorker.class);
         properties = mock(ConductorProperties.class);
         when(properties.getSystemTaskWorkerPollInterval()).thenReturn(Duration.ofMillis(50));
         when(properties.getSystemTaskWorkerExecutionNamespace()).thenReturn("");
     }
 
     @Test
-    public void isSystemTask() {
-        createTaskMapping();
-        SystemTaskWorkerCoordinator systemTaskWorkerCoordinator = new SystemTaskWorkerCoordinator(queueDAO,
-            workflowExecutor, properties, executionService, Collections.emptyList());
-        assertTrue(systemTaskWorkerCoordinator.isAsyncSystemTask(TEST_QUEUE + ISOLATION_CONSTANT));
-    }
-
-    @Test
-    public void isSystemTaskNotPresent() {
-        createTaskMapping();
-        SystemTaskWorkerCoordinator systemTaskWorkerCoordinator = new SystemTaskWorkerCoordinator(queueDAO,
-            workflowExecutor, properties, executionService, Collections.emptyList());
-        assertFalse(systemTaskWorkerCoordinator.isAsyncSystemTask(null));
-    }
-
-    @Test
     public void testIsFromCoordinatorExecutionNameSpace() {
         doReturn("exeNS").when(properties).getSystemTaskWorkerExecutionNamespace();
-        SystemTaskWorkerCoordinator systemTaskWorkerCoordinator = new SystemTaskWorkerCoordinator(queueDAO,
-            workflowExecutor, properties, executionService, Collections.emptyList());
+        SystemTaskWorkerCoordinator systemTaskWorkerCoordinator = new SystemTaskWorkerCoordinator(systemTaskWorker,
+                properties, Collections.emptySet());
         assertTrue(
-            systemTaskWorkerCoordinator.isFromCoordinatorExecutionNameSpace(TEST_QUEUE + EXECUTION_NAMESPACE_CONSTANT));
+            systemTaskWorkerCoordinator.isFromCoordinatorExecutionNameSpace(new TaskWithExecutionNamespace()));
     }
 
-    private void createTaskMapping() {
-        WorkflowSystemTask mockWorkflowTask = mock(WorkflowSystemTask.class);
-        when(mockWorkflowTask.getTaskType()).thenReturn(TEST_QUEUE);
-        when(mockWorkflowTask.isAsync()).thenReturn(true);
-        SystemTaskWorkerCoordinator.taskNameWorkflowTaskMapping.put(TEST_QUEUE, mockWorkflowTask);
+    static class TaskWithExecutionNamespace extends WorkflowSystemTask {
+        public TaskWithExecutionNamespace() {
+            super(TEST_QUEUE + EXECUTION_NAMESPACE_CONSTANT);
+        }
     }
 }
